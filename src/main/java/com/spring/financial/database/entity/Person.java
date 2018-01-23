@@ -1,11 +1,9 @@
 package com.spring.financial.database.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name="PERSON")
 public class Person {
 	
 	@Id
@@ -15,6 +13,9 @@ public class Person {
 	private String name;
 	private String password;
 
+
+	public Person() {
+	}
 
 	public Person(String name, String password) {
 		this.name = name;

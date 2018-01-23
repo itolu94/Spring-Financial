@@ -1,11 +1,9 @@
 package com.spring.financial.database.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name="TRANSACTIONS")
 public class Transactions {
 	
 	@Id
@@ -15,7 +13,7 @@ public class Transactions {
 	private int userId;
 	private int amount;
 	private String category;
-	private String Note;
+	private String note;
 
 	public int getId() {
 		return id;
@@ -25,11 +23,14 @@ public class Transactions {
 		this.id = id;
 	}
 
+	public Transactions() {
+	}
+
 	public Transactions(int userId, int amount, String category, String note) {
 		this.userId = userId;
 		this.amount = amount;
 		this.category = category;
-		Note = note;
+		note = note;
 	}
 
 	public int getUserId() {
@@ -57,10 +58,15 @@ public class Transactions {
 	}
 
 	public String getNote() {
-		return Note;
+		return note;
 	}
 
 	public void setNote(String note) {
-		Note = note;
+		note = note;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("\nTransaction [id=%s, amount=%s, note=%s, category=%s]", id, amount, note, category);
 	}
 }
