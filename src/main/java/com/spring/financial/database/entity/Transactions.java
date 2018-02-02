@@ -1,6 +1,7 @@
 package com.spring.financial.database.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="TRANSACTIONS")
@@ -14,6 +15,7 @@ public class Transactions {
 	private int amount;
 	private String category;
 	private String note;
+	private Date created;
 
 	public int getId() {
 		return id;
@@ -26,11 +28,12 @@ public class Transactions {
 	public Transactions() {
 	}
 
-	public Transactions(int userId, int amount, String category, String note) {
+	public Transactions(int userId, int amount, String category, String note, Date created) {
 		this.userId = userId;
 		this.amount = amount;
 		this.category = category;
-		note = note;
+		this.note = note;
+		this.created = created;
 	}
 
 	public int getUserId() {
@@ -39,6 +42,14 @@ public class Transactions {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created= created;
 	}
 
 	public int getAmount() {

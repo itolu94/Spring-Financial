@@ -2,18 +2,15 @@ package com.spring.financial.controller;
 
 import com.spring.financial.database.entity.Transactions;
 import com.spring.financial.database.repository.TransactionsRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 public class TransactionsController {
-
 
 	@Autowired
 	TransactionsRepository transactionsRepository;
@@ -31,21 +28,22 @@ public class TransactionsController {
 		return transactionsList;
 	}
 
-	@RequestMapping(value = "/api/add-transaction", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/add-transaction", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String saveTransaction(@RequestParam String category, @RequestParam Integer amount,
 								  @RequestParam String note, @RequestParam(value="userId", required = false, defaultValue = "1") Integer userId) {
 		Integer transactionId;
 		try {
-			Transactions transactions= new Transactions(userId, amount, category, note);
+			Date date = new Date();
+			Transactions transactions= new Transactions(userId, amount, category, note, date);
 			transactionsRepository.save(transactions);
 			transactionId = transactions.getId();
 		}
 		catch (Exception e){
-			return "{completed: \"False\", message: \"Transaction was unable to save.\"}";
+			return "{\"completed\": \"false\", \"message\": \"Transaction was unable to save.\"}";
 
 		}
-		return "{completed: \"True\", transactionId: " + transactionId  + "}";
+		return "{\"completed\": true, \"transactionId\": " + transactionId  + "}";
 	}
 
 
@@ -56,10 +54,10 @@ public class TransactionsController {
 			transactionsRepository.deleteById(transactionId);
 		}
 		catch (Exception e){
-			return "{completed: \"False\", message: \"Transaction was unable to be delete.\"}";
+			return "{\"completed\" : \"false\", \"message \": \"Transaction was unable to be delete.\"}";
 
 		}
-		return "{completed: \"True\"}";
+		return "{\"completed\": \"true\"}";
 	}
 }
 

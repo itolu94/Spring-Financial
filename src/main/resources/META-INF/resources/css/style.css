@@ -1,5 +1,5 @@
 body{
-    background-image: url('https://democrats-financialservices.house.gov/uploadedphotos/highresolution/bbb961a6-3367-4ada-bc9d-84a2b5d2ea74.jpg');
+    background-image: url('../img/night_sky.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -8,17 +8,33 @@ body{
 }
 
 #transactionsList{
-    background-color: navajowhite;
+    background-color: dimgrey;
     color: black;
     height: 700px;
     overflow-y: auto;
+    border-radius: 25px;
+    border: solid white 2px
 }
 
 .transactions {
     border: solid black 2px;
-    width: 33%;
+    width: 30%;
+    margin: 1%;
     float: left;
-    height: 230px;
+    height: 200px;
+}
+
+#balanceHeader{
+    text-decoration: underline;
+    margin: 0;
+}
+
+#balance{
+    margin: 10px 0;
+}
+#addTransaction {
+    border-bottom: 2px black solid;
+    padding-bottom: 20px;
 }
 
 #addTransaction input{
@@ -28,12 +44,17 @@ body{
     margin: 0 25%
 }
 
+.catagory{
+    width:52%;
+    display: inline;
+}
+
 #content {
     margin-top: 30px;
 }
 
 #nav-mobile, nav{
-    background-color: grey;
+    background-color: #252525;
  }
 
 .transactionCard {
@@ -42,6 +63,18 @@ body{
 
 .deleteIcon{
     float: left;
+}
+.catagoryIcon{
+    float: right;
+    margin-right: 2%;
+}
+
+.transactionAmount{
+    font-size: 200%;
+}
+
+#newTransactionForm{
+    width: 100%;
 }
 
 @media only screen and (max-width: 700px) {
@@ -52,9 +85,39 @@ body{
     }
 
     #addTransaction input{
-        width: 1000%;
+        width: 100%;
         clear: right;
         display: block;
     }
 }
 
+
+@media only screen and (max-width: 850px) {
+    nav .brand-logo {
+        font-size: 1.4rem;
+    }
+
+    #addTransaction input{
+        width: 100%;
+        display: block;
+        margin: 0;
+    }
+
+    #newTransactionForm{
+    width: 90%;
+    margin: 0 5%;
+    }
+
+    .catagory{
+        width: 100%;
+        display: inline;
+    }
+
+    .transactions {
+        border: solid black 2px;
+        width: 80%;
+        margin: 2% 10%;
+        height: 200px;
+    }
+
+}

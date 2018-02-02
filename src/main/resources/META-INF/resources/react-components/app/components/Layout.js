@@ -58,9 +58,9 @@ class Layout extends Component {
                         {this.handleNavBar()}
                     </div>
                 </nav>
-                <div id="pageContent" className="container">
+                <div id="pageContent">
                     <div className="row center-align">
-                        <div className="col l8 offset-l2" id='content'>
+                        <div className="col s8 offset-s2" id='content'>
                             <div id='transactionsList'>
                                 {this.handleComponent()}
                             </div>
