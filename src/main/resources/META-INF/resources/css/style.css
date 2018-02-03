@@ -53,6 +53,9 @@ body{
     margin-top: 30px;
 }
 
+.editNoteSubmitBtn {
+    margin: 0;
+}
 #nav-mobile, nav{
     background-color: #252525;
  }

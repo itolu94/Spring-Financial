@@ -12,9 +12,8 @@ exports.getTransaction = (cb) => {
 };
 
 
-//Need to configure spring Control to map post body to POJO
 exports.postTransaction = (transaction, cb) => {
-    axios.post(`/api/add-transaction?category=${transaction.category}&amount=${transaction.amount}&note=${transaction.note}`
+    axios.post(`/api/add-transaction`, transaction
         ).then((response) => {
         cb(response.data);
     }).catch((err) => {
@@ -24,7 +23,6 @@ exports.postTransaction = (transaction, cb) => {
     });
 };
 
-//Need to configure spring Control to map post body to POJO
 exports.deleteTransaction = (transactionId, cb) => {
     axios.delete(`api/delete-transaction?transactionId=${transactionId}`,
     ).then((response) => {

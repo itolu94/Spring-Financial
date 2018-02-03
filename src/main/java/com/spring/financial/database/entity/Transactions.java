@@ -73,7 +73,7 @@ public class Transactions {
 	}
 
 	public void setNote(String note) {
-		note = note;
+		this.note = note;
 	}
 
 	@Override

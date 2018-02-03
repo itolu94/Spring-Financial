@@ -95,7 +95,6 @@ export default class Transactions extends Component {
             let transactionLength = res.length;
             let balance = this.state.balance;
             if(res){
-                console.log(this);
                 res.map((transaction, index) => {
                     if(transaction.category === "deposit"){
                         balance += transaction.amount;

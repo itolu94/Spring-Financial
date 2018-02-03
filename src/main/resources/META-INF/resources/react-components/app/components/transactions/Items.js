@@ -54,16 +54,19 @@ export default class Items extends Component{
                 <div>
                     <form onSubmit={this.updateNote}>
                         <input onChange={this.handleChange} value={this.state.note} />
-                        <input type="submit"/>
+                        <input className='editNoteSubmitBtn' type="submit"/>
                     </form>
                 </div>
             )
         } else {
             return (
-                <div ondblclick={this.editNote}>
-                    <p>{this.props.transaction.note}</p>
+                <div >
+                    <p onDoubleClick={this.editNote}>{this.props.transaction.note}</p>
                 </div>)
         }
+    }
+    componentWillMount(){
+        this.setState({note: this.props.transaction.note})
     }
  render(){
     return (
@@ -76,7 +79,7 @@ export default class Items extends Component{
             </div>
             <div className="card-content transactionCard">
                 <p className='transactionAmount'>${this.props.transaction.amount}</p>
-                {this.transactionNote()};
+                {this.transactionNote()}
             </div>
         </div>
     )

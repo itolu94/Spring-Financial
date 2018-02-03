@@ -30,14 +30,13 @@ public class TransactionsController {
 
 	@RequestMapping(value = "/api/add-transaction", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String saveTransaction(@RequestParam String category, @RequestParam Integer amount,
-								  @RequestParam String note, @RequestParam(value="userId", required = false, defaultValue = "1") Integer userId) {
+	public String saveTransaction(@RequestBody Transactions transaction) {
 		Integer transactionId;
 		try {
 			Date date = new Date();
-			Transactions transactions= new Transactions(userId, amount, category, note, date);
-			transactionsRepository.save(transactions);
-			transactionId = transactions.getId();
+			transaction.setCreated(date);
+			transactionsRepository.save(transaction);
+			transactionId = transaction.getId();
 		}
 		catch (Exception e){
 			return "{\"completed\": \"false\", \"message\": \"Transaction was unable to save.\"}";
@@ -47,9 +46,10 @@ public class TransactionsController {
 	}
 
 
+
 	@RequestMapping(value = "/api/delete-transaction", method = RequestMethod.DELETE)
 	@ResponseBody
-	public String saveTransaction(@RequestParam Integer transactionId) {
+	public String deleteTransaction(@RequestParam Integer transactionId) {
 		try {
 			transactionsRepository.deleteById(transactionId);
 		}
