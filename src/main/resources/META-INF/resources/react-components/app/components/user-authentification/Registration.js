@@ -13,8 +13,8 @@ class Registration extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleChange(key, value){
-        this.setState({[key]: value });
+    handleChange(e){
+        this.setState({[e.target.name]: e.target.value});
     }
     handleSubmit(e){
         e.preventDefault();
@@ -22,26 +22,24 @@ class Registration extends Component {
     }
     render() {
         return (
-            <div>
-                <form onSubmit={()=> this.handleSubmit(e)} action="/create-account" method="POST">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input onChange={() => this.handleChange('name', e.target.value)} required name='name' id="name" type="text"  />
+            //TODO update inputs to have materialize label animation.
+            <div className='verification'>
+                <p className='verificationHeader'>Registration </p>
+                <form onSubmit={this.handleSubmit} action="/create-account" method="POST">
+                    <div>
+                        <input value={this.state.name} onChange={this.handleChange}  placeholder='Name' required name='name' id="name" type="text"  />
                     </div>
-                    <div class="form-group">
-                        <label for="email" >Email</label>
-                        <input onChange={() => this.handleChange('email', e.target.value)} required name='email' type='email' id="email"  />
+                    <div>
+                        <input value={this.state.email} onChange={this.handleChange} placeholder='Email' required name='email' type='email' id="email"  />
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input onChange={() => this.handleChange('password', e.target.value)} required name='password' id="password" type="password"/>
+                    <div>
+                        <input value={this.state.password} onChange={this.handleChange} placeholder='Password' required name='password' id="password" type="password"/>
                     </div>
-                    <div class="form-group">
-                        <label for="password2">Confirm Password</label>
-                        <input onChange={() => this.handleChange('password2', e.target.value)} required name='password2' id="password2" type="password"/>
+                    <div>
+                        <input value={this.state.password2} onChange={this.handleChange} placeholder='Password' required name='password2' id="password2" type="password"/>
                     </div>
                     <br/>
-                        <input value='Sign Up' class="btn-large btn-signup" type="submit" />
+                        <input value='Sign Up' className="btn-large btn-signup verificationBtn" type="submit" />
                 </form>
             </div>
         )

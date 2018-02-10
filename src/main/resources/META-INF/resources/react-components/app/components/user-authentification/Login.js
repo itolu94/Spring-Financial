@@ -12,8 +12,8 @@ class Login extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleChange(key, value){
-        this.setState({[key]: value });
+    handleChange(e){
+        this.setState({[e.target.name]: e.target.value});
     }
     handleSubmit(e){
         e.preventDefault();
@@ -21,18 +21,18 @@ class Login extends Component {
     }
     render() {
         return (
-            <div>
-                <form onSubmit={()=> this.handleSubmit(e)} action="/login" method="POST">
-                    <div class="form-group">
-                        <label for="email" >Email</label>
-                        <input onChange={() => this.handleChange('email', e.target.value)} required name='email' type='email' id="email"  />
+            //TODO update inputs to have materialize label animation.
+            <div className='verification'>
+                <p className='verificationHeader'>Login</p>
+                <form onSubmit={this.handleSubmit} action="/login" method="POST">
+                    <div >
+                        <input onChange={this.handleChange} placeholder='Email' required name='email' type='email' id="email"  />
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input onChange={() => this.handleChange('password', e.target.value)} required name='password' id="password" type="password"/>
+                    <div >
+                        <input onChange={this.handleChange} placeholder='Password' required name='password' id="password" type="password"/>
                     </div>
                     <br/>
-                    <input value='Sign Up' class="btn-large btn-signup" type="submit" />
+                    <input value='Sign Up' className="btn-large btn-signup verificationBtn" type="submit" />
                 </form>
             </div>
         )

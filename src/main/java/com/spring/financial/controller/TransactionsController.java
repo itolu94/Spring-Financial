@@ -59,5 +59,20 @@ public class TransactionsController {
 		}
 		return "{\"completed\": \"true\"}";
 	}
+
+	@RequestMapping(value = "/api/update-transaction", method = RequestMethod.PUT, produces = "application/json")
+	@ResponseBody
+	public String updateTransaction(@RequestBody Transactions transaction) {
+		Integer transactionId;
+		try {
+			transactionsRepository.save(transaction);
+			transactionId = transaction.getId();
+		}
+		catch (Exception e){
+			return "{\"completed\": \"false\", \"message\": \"Transaction was unable to save.\"}";
+
+		}
+		return "{\"completed\": true, \"transactionId\": " + transactionId  + "}";
+	}
 }
 

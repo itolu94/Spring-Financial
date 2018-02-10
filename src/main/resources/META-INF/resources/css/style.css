@@ -10,7 +10,7 @@ body{
 #transactionsList{
     background-color: dimgrey;
     color: black;
-    height: 700px;
+    /*height: 700px;*/
     overflow-y: auto;
     border-radius: 25px;
     border: solid white 2px
@@ -56,6 +56,9 @@ body{
 .editNoteSubmitBtn {
     margin: 0;
 }
+.editNoteSubmitInp{
+    margin: 0;
+}
 #nav-mobile, nav{
     background-color: #252525;
  }
@@ -80,20 +83,18 @@ body{
     width: 100%;
 }
 
-@media only screen and (max-width: 700px) {
-    .transactions {
-        border: solid black 2px;
-        width: 100%;
-        height: 230px;
-    }
-
-    #addTransaction input{
-        width: 100%;
-        clear: right;
-        display: block;
-    }
+.verification{
+    margin: 3% 25%;
 }
 
+.verificationHeader {
+    font-size: 30px;
+    text-decoration: underline;
+}
+
+.verificationBtn{
+    border-radius: 25px;
+}
 
 @media only screen and (max-width: 850px) {
     nav .brand-logo {
@@ -107,8 +108,8 @@ body{
     }
 
     #newTransactionForm{
-    width: 90%;
-    margin: 0 5%;
+        width: 90%;
+        margin: 0 5%;
     }
 
     .catagory{
@@ -124,3 +125,19 @@ body{
     }
 
 }
+
+@media only screen and (max-width: 700px) {
+    .transactions {
+        border: solid black 2px;
+        width: 100%;
+        height: 230px;
+    }
+
+    #addTransaction input{
+        width: 100%;
+        clear: right;
+        display: block;
+    }
+}
+
+

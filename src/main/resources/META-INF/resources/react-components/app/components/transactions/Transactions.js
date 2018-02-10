@@ -16,6 +16,7 @@ export default class Transactions extends Component {
         this.newTransaction = this.newTransaction.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.deleteTransaction = this.deleteTransaction.bind(this);
+        this.updateNote = this.updateNote.bind(this);
     }
 
     deleteTransaction(index){
@@ -36,6 +37,13 @@ export default class Transactions extends Component {
             }
         })
     }
+
+    updateNote(transaction, index){
+        let transactions = this.state.transactions;
+        transactions[index] = transaction;
+        this.setState({transactions});
+    }
+
     listTransactions() {
         if(this.state.transactions) {
             return this.state.transactions.map((transaction, index) => {
@@ -46,6 +54,7 @@ export default class Transactions extends Component {
                                 index={index}
                                 key={index}
                                 deleteTransaction={this.deleteTransaction}
+                                updateNote={this.updateNote}
                             />
                         </div>
                     )
@@ -131,7 +140,7 @@ export default class Transactions extends Component {
                             <option value="deposit">Deposit</option>
                         </select>
                         <input value={this.state.amount} onChange={(e) => this.handleChange('amount', e)} type="number" required placeholder='Amount'/>
-                        <input value={this.state.note} onChange={(e) => this.handleChange('note', e)} type="text" maxLength="50" placeholder='Note'/>
+                        <input value={this.state.note} onChange={(e) => this.handleChange('note', e)} type="text" maxLength="25" placeholder='Note'/>
                         <input type="submit"/>
                     </form>
                 </div>

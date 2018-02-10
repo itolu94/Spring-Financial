@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 exports.getTransaction = (cb) => {
     axios.get('/api/get-transactions').then((response) => {
         cb(response.data);
@@ -10,7 +9,6 @@ exports.getTransaction = (cb) => {
         cb(res);
     });
 };
-
 
 exports.postTransaction = (transaction, cb) => {
     axios.post(`/api/add-transaction`, transaction
@@ -28,4 +26,15 @@ exports.deleteTransaction = (transactionId, cb) => {
     ).then((response) => {
         cb(response.data);
     })
+};
+
+exports.updateTransaction = (transaction, cb) => {
+    axios.put(`/api/update-transaction`, transaction
+    ).then((response) => {
+        cb(response.data);
+    }).catch((err) => {
+        console.log(err);
+        let res  = {completed: false };
+        cb(res);
+    });
 };

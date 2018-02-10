@@ -6,13 +6,13 @@ export default class Items extends Component{
          super();
          this.state = {
              editing: false,
-             note: 'this.props.transaction.note'
+             note: ''
          };
          this.itemIcon = this.itemIcon.bind(this);
-         this.updateNote = this.updateNote.bind(this);
          this.editNote = this.editNote.bind(this);
          this.transactionNote = this.transactionNote.bind(this);
          this.handleChange = this.handleChange.bind(this);
+         this.putNote = this.putNote.bind(this);
      }
      itemIcon (){
          switch(this.props.transaction.category){
@@ -31,15 +31,7 @@ export default class Items extends Component{
              default:
                  return 'local_offer';
          }
-}
-
-    updateNote(){
-        // Helpers.updateNote();
-        console.log('note would have been updated in database');
-        this.setState({editing: false});
      }
-
-
     editNote(){
         this.setState({editing: true});
     }
@@ -48,13 +40,26 @@ export default class Items extends Component{
         this.setState({note: e.target.value});
     }
 
+    putNote(e){
+        e.preventDefault();
+        let transaction = this.props.transaction;
+        transaction.note = this.state.note;
+        Helpers.updateTransaction(transaction, (resp) =>{
+            if(resp.completed){
+                this.setState({editing: false});
+                this.props.updateNote(transaction, index);
+            } else {
+                console.log('note could not be updated');
+            }
+        });
+    }
     transactionNote(){
         if(this.state.editing){
             return (
                 <div>
-                    <form onSubmit={this.updateNote}>
-                        <input onChange={this.handleChange} value={this.state.note} />
-                        <input className='editNoteSubmitBtn' type="submit"/>
+                    <form onSubmit={this.putNote}>
+                        <input className='editNoteSubmitInp' onChange={this.handleChange} value={this.state.note} />
+                        <input maxLength="25" className='editNoteSubmitBtn' type="submit"/>
                     </form>
                 </div>
             )
@@ -65,6 +70,7 @@ export default class Items extends Component{
                 </div>)
         }
     }
+
     componentWillMount(){
         this.setState({note: this.props.transaction.note})
     }
