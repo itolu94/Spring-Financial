@@ -11,18 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class DatabaseApplication  {
-
 //	private Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
-//
-//	@Autowired
-//	PersonRepository dao;
-//
 	public static void main(String[] args) {
 		SpringApplication.run(DatabaseApplication.class, args);
 	}
 
-//	@Override
-//	public void run(String... args) throws Exception {
-//		logger.info("All users -> {}" ,  dao.findAll());
-//	}
 }

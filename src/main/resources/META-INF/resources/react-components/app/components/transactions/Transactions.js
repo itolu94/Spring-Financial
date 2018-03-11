@@ -96,8 +96,8 @@ export default class Transactions extends Component {
                 }
             });
     }
-    handleChange(key, e) {
-        this.setState({[key]: e.target.value});
+    handleChange(e) {
+        this.setState({[e.target.name]: e.target.value});
     }
     componentWillMount() {
         Helpers.getTransaction((res) =>{
@@ -130,7 +130,7 @@ export default class Transactions extends Component {
                 </div>
                 <div id='addTransaction'>
                     <form id='newTransactionForm' onSubmit={(e)=> this.newTransaction(e)}>
-                        <select className="catagory" value={this.state.category} onChange={(e) => this.handleChange('category', e)} name="category" required>
+                        <select className="catagory" value={this.state.category} onChange={this.handleChange} name="category" required>
                             <option value="">Select the best option</option>
                             <option value="shopping">Shopping </option>
                             <option value="car"> Car</option>
@@ -139,8 +139,8 @@ export default class Transactions extends Component {
                             <option value="medical">Medical</option>
                             <option value="deposit">Deposit</option>
                         </select>
-                        <input value={this.state.amount} onChange={(e) => this.handleChange('amount', e)} type="number" required placeholder='Amount'/>
-                        <input value={this.state.note} onChange={(e) => this.handleChange('note', e)} type="text" maxLength="25" placeholder='Note'/>
+                        <input value={this.state.amount} onChange={this.handleChange} name="amount" type="number" required placeholder='Amount'/>
+                        <input value={this.state.note} onChange={this.handleChange} name='note' type="text" maxLength="25" placeholder='Note'/>
                         <input type="submit"/>
                     </form>
                 </div>

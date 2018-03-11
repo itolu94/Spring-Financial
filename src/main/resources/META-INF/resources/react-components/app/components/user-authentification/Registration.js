@@ -39,7 +39,7 @@ class Registration extends Component {
                         <input value={this.state.password2} onChange={this.handleChange} placeholder='Password' required name='password2' id="password2" type="password"/>
                     </div>
                     <br/>
-                        <input value='Sign Up' className="btn-large btn-signup verificationBtn" type="submit" />
+                    <input value='Sign Up' className="btn-large btn-signup verificationBtn" type="button" />
                 </form>
             </div>
         )
