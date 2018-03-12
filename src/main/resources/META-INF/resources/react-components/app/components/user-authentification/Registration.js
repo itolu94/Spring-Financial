@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 import React, {Component} from 'react';
+import {createAccount} from '../../util/helpers'
 
 class Registration extends Component {
     constructor() {
@@ -18,6 +19,14 @@ class Registration extends Component {
     }
     handleSubmit(e){
         e.preventDefault();
+        if(this.state.password !== this.state.password2){
+            alert("Passwords to not match")
+        }
+        let {name, email, password} = this.state;
+        let data = {name, email, password};
+        createAccount(data, (resp)=> {
+            console.log(resp);
+        });
         console.log('Account was about to be created!');
     }
     render() {

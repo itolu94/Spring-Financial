@@ -38,3 +38,10 @@ exports.updateTransaction = (transaction, cb) => {
         cb(res);
     });
 };
+
+exports.createAccount = (userInformation, cb) => {
+    axios.post('api/add-person', userInformation
+    ).then((response) => {
+        cb(response);
+    });
+}
