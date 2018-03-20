@@ -44,4 +44,16 @@ exports.createAccount = (userInformation, cb) => {
     ).then((response) => {
         cb(response);
     });
-}
+};
+
+
+exports.login = (userInformation, cb) => {
+    axios.post('api/login', userInformation
+    ).then((response) => {
+        cb(response);
+    }).catch((err) => {
+        console.log(err);
+        let res  = {completed: false };
+        cb(res);
+    })
+};
