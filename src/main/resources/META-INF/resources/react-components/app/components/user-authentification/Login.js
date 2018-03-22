@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
 
 import React, {Component} from 'react';
-import { withRouter } from "react-router-dom";
 import Helpers from '../../util/helpers';
+import cookie from 'react-cookies'
 
 class Login extends Component {
     constructor() {
@@ -24,8 +24,10 @@ class Login extends Component {
         let {email, password} = this.state;
         let data =  {email, password};
         Helpers.login(data, (resp) => {
-            if(resp.completed){
-                // resp.token
+            console.log(resp);
+            if(resp.data.completed){
+                cookie.save("sf", resp.data.token, {path: '/'});
+                this.props.history.push('/');
             }
         })
     }
@@ -54,4 +56,4 @@ class Login extends Component {
     }
 }
 
-export default withRouter(Login);
+export default Login;

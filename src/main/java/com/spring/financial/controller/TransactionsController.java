@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 public class TransactionsController {
 
 	@Autowired
 	TransactionsRepository transactionsRepository;
 
-	@RequestMapping(value = "/api/get-transactions", method = RequestMethod.GET)
-	@ResponseBody
+	@GetMapping(value = "/api/get-transactions")
 	public List<Transactions> getTransactions(){
 		List<Transactions> transactionsList = new ArrayList<>();
 		try {
@@ -28,9 +27,9 @@ public class TransactionsController {
 		return transactionsList;
 	}
 
-	@RequestMapping(value = "/api/add-transaction", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String saveTransaction(@RequestBody Transactions transaction) {
+	@PostMapping(value = "/api/add-transaction")
+	public String saveTransaction(@RequestBody Transactions transaction, @CookieValue(value = "sf", defaultValue = "false") String sf) {
+		System.out.println(sf);
 		Integer transactionId;
 		try {
 			Date date = new Date();
@@ -47,8 +46,7 @@ public class TransactionsController {
 
 
 
-	@RequestMapping(value = "/api/delete-transaction", method = RequestMethod.DELETE)
-	@ResponseBody
+	@DeleteMapping(value = "/api/delete-transaction")
 	public String deleteTransaction(@RequestParam Integer transactionId) {
 		try {
 			transactionsRepository.deleteById(transactionId);
@@ -60,8 +58,7 @@ public class TransactionsController {
 		return "{\"completed\": \"true\"}";
 	}
 
-	@RequestMapping(value = "/api/update-transaction", method = RequestMethod.PUT, produces = "application/json")
-	@ResponseBody
+	@PutMapping(value = "/api/update-transaction")
 	public String updateTransaction(@RequestBody Transactions transaction) {
 		Integer transactionId;
 		try {

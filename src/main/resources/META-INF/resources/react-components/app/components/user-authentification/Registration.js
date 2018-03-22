@@ -26,6 +26,7 @@ class Registration extends Component {
         let {name, email, password} = this.state;
         let data = {name, email, password};
         Helpers.createAccount(data, (resp)=> {
+            console.log(resp.data.completed);
             if(resp.data.completed){
                 this.props.history.push('/login')
             }

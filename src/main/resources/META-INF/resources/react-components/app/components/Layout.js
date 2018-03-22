@@ -15,26 +15,25 @@ class Layout extends Component {
         super();
         this.state = {
             loggedIn: false,
-            page: 'transactions'
         }
         this.handleNavBar =  this.handleNavBar.bind(this);
         this.changePage = this.changePage.bind(this);
-        this.handleComponent = this.handleComponent.bind(this);
+        this.handleLoggedIn = this.handleLoggedIn.bind(this);
     }
     changePage(page){
         this.setState({page});
     }
 
-    handleComponent(){
-        switch (this.state.page){
-            case 'transactions':
-                return <Transactions/>
-            case 'sign-up':
-                return <Registration/>
-            case 'login':
-                return <Login />
+    handleLoggedIn(authenticated){
+        switch(authenticated) {
+            case true:
+                this.setState({loggedIn: true});
+                break;
+            case false:
+                this.setState({loggedIn: false});
+                break;
             default:
-                return <Transactions/>
+                this.setState({loggedIn: false});
         }
     }
 
@@ -54,11 +53,6 @@ class Layout extends Component {
             )
         }
     }
-    userAuthentification(){
-        switch(loggedIn){
-
-        }
-    }
     render() {
         return (
                 <div>
@@ -74,8 +68,8 @@ class Layout extends Component {
                                 <div id='transactionsList'>
                                     <Switch>
                                         <Route path='/login' component={Login} />
-                                        <Route exact path='/' component={Transactions} loggedIn={this.state.loggedIn} />
                                         <Route path='/create-account' component={Registration} />
+                                        <Route exact path='/' component={Transactions} handleLoggedIn={this.handleLoggedIn} />
                                     </Switch>
                                 </div>
                             </div>

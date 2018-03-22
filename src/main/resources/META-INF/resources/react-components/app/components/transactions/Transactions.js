@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Item from './Items';
 import Helpers from '../../util/helpers';
+import cookie from 'react-cookies'
 
 export default class Transactions extends Component {
     constructor(){
@@ -100,26 +101,31 @@ export default class Transactions extends Component {
         this.setState({[e.target.name]: e.target.value});
     }
     componentWillMount() {
-        Helpers.getTransaction((res) =>{
-            let transactionLength = res.length;
-            let balance = this.state.balance;
-            if(res){
-                res.map((transaction, index) => {
-                    if(transaction.category === "deposit"){
-                        balance += transaction.amount;
-                    }
-                    else {
-                        balance -= transaction.amount;
-                    }
-                    if ((index + 1) === transactionLength) {
-                        this.setState({
-                            transactions: res,
-                            balance
-                        });
-                    }
-                });
-            }
-        });
+        let sfCookie = cookie.load("sf");
+        if (sfCookie) {
+            Helpers.getTransaction((res) =>{
+                let transactionLength = res.length;
+                let balance = this.state.balance;
+                if(res){
+                    res.map((transaction, index) => {
+                        if(transaction.category === "deposit"){
+                            balance += transaction.amount;
+                        }
+                        else {
+                            balance -= transaction.amount;
+                        }
+                        if ((index + 1) === transactionLength) {
+                            this.setState({
+                                transactions: res,
+                                balance
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            this.props.history.push('/login');
+        }
     }
     render(){
         return (
