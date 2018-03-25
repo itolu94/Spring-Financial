@@ -11,12 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
-
-//TODO create controler to send all non api request to webpages;
-//TODO return Response Entity for all API request;
+//TODO create controller to send all non api request to webpages;
 @RestController
 public class PersonController {
 
@@ -24,19 +20,24 @@ public class PersonController {
     PersonRepository personRepository;
 
     @PostMapping(value = "/api/add-person")
-    public String addPerson(@RequestBody Person person) {
+    public ResponseEntity<Object> addPerson(@RequestBody Person person, @CookieValue(value = "sf", defaultValue = "") String sf) {
+        System.out.println(sf);
+        JSONObject Entity = new JSONObject();
         if(personRepository.findByEmail(person.getEmail()).isEmpty()){
             String hashedPassword = HashManager.hashpw(person.getPassword());
             person.setPassword(hashedPassword);
             personRepository.save(person);
-            return "{\"completed\": true ,\"message\": \"account created\"}";
+            Entity.put("completed", true);
+            return new ResponseEntity<>(Entity, HttpStatus.OK);
         }
         else {
-            return "{\"completed\": false ,\"message\": \"account already exist\"}";
+            Entity.put("completed", false);
+            Entity.put("message", "Account already exist");
+            return new ResponseEntity<>(Entity, HttpStatus.CONFLICT);
         }
     }
     @PostMapping(value = "/api/login")
-    public ResponseEntity<Object> login(@RequestBody PersonInfo personInfo, HttpServletResponse response) {
+    public ResponseEntity<Object> login(@RequestBody PersonInfo personInfo) {
         JSONObject Entity = new JSONObject();
         String email = personInfo.getEmail();
         String password =  personInfo.getPassword();
@@ -45,8 +46,6 @@ public class PersonController {
             String hashPassword = person.getPassword();
             if (HashManager.checkpw(password, hashPassword)) {
                 String token = TokenManager.createJWT(email);
-                Cookie cookie = new Cookie("sf", token);
-                response.addCookie(cookie);
                 Entity.put("completed", true);
                 Entity.put("token", token);
                 return new ResponseEntity<>(Entity, HttpStatus.OK);
@@ -54,14 +53,12 @@ public class PersonController {
                 Entity.put("completed", false);
                 Entity.put("message", "Invalid credentials");
                 return new ResponseEntity<>(Entity, HttpStatus.UNAUTHORIZED);
-
             }
         }
         else {
             Entity.put("completed", false);
-            Entity.put("message", "\"Account not created for email\"");
+            Entity.put("message", "Email has not been registered");
             return new ResponseEntity<>(Entity, HttpStatus.NOT_FOUND);
-
         }
     }
 

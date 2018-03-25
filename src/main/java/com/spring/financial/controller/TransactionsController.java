@@ -1,8 +1,13 @@
 package com.spring.financial.controller;
 
+import com.spring.financial.auth.TokenManager;
 import com.spring.financial.database.entity.Transactions;
 import com.spring.financial.database.repository.TransactionsRepository;
+import io.jsonwebtoken.Claims;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -16,10 +21,12 @@ public class TransactionsController {
 	TransactionsRepository transactionsRepository;
 
 	@GetMapping(value = "/api/get-transactions")
-	public List<Transactions> getTransactions(){
+	public List<Transactions> getTransactions(@CookieValue(value = "sf", defaultValue = "") String sf){
+		Claims claims = TokenManager.parseJWT(sf);
+		String userEmail = claims.getSubject();
 		List<Transactions> transactionsList = new ArrayList<>();
 		try {
-			transactionsList =	transactionsRepository.findAll();
+			transactionsList =	transactionsRepository.findByUserEmail(userEmail);
 		}
 		catch (Exception e){
 			return transactionsList;
@@ -28,48 +35,63 @@ public class TransactionsController {
 	}
 
 	@PostMapping(value = "/api/add-transaction")
-	public String saveTransaction(@RequestBody Transactions transaction, @CookieValue(value = "sf", defaultValue = "false") String sf) {
-		System.out.println(sf);
-		Integer transactionId;
-		try {
-			Date date = new Date();
-			transaction.setCreated(date);
-			transactionsRepository.save(transaction);
-			transactionId = transaction.getId();
+	public ResponseEntity<Object> saveTransaction(@RequestBody Transactions transaction, @CookieValue(value = "sf", defaultValue = "") String sf) {
+		JSONObject Entity = new JSONObject();
+		if (!sf.isEmpty()) {
+			try {
+				Claims claims = TokenManager.parseJWT(sf);
+				String userEmail = claims.getSubject();
+				Date date = new Date();
+				transaction.setCreated(date);
+				transaction.setUserEmail(userEmail);
+				transactionsRepository.save(transaction);
+				Entity.put("completed", true);
+				Entity.put("transactionId", transaction.getId());
+				return new ResponseEntity<>(Entity, HttpStatus.OK);
+			} catch (Exception e) {
+				Entity.put("completed", false);
+				Entity.put("message", "Transaction was unable to save");
+				return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
-		catch (Exception e){
-			return "{\"completed\": \"false\", \"message\": \"Transaction was unable to save.\"}";
-
-		}
-		return "{\"completed\": true, \"transactionId\": " + transactionId  + "}";
+		Entity.put("completed", false);
+		Entity.put("message", "Please login");
+		return new ResponseEntity<>(Entity, HttpStatus.UNAUTHORIZED);
 	}
 
-
-
 	@DeleteMapping(value = "/api/delete-transaction")
-	public String deleteTransaction(@RequestParam Integer transactionId) {
+	public ResponseEntity<Object> deleteTransaction(@RequestParam Integer transactionId) {
+		JSONObject Entity = new JSONObject();
 		try {
 			transactionsRepository.deleteById(transactionId);
 		}
 		catch (Exception e){
-			return "{\"completed\" : \"false\", \"message \": \"Transaction was unable to be delete.\"}";
+			Entity.put("completed", false);
+			Entity.put("message", "Transaction was unable to be delete");
+			return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
-		return "{\"completed\": \"true\"}";
+		Entity.put("completed", true);
+		return new ResponseEntity<>(Entity, HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/api/update-transaction")
-	public String updateTransaction(@RequestBody Transactions transaction) {
+	public ResponseEntity<Object>  updateTransaction(@RequestBody Transactions transaction) {
+		JSONObject Entity = new JSONObject();
 		Integer transactionId;
 		try {
 			transactionsRepository.save(transaction);
 			transactionId = transaction.getId();
 		}
 		catch (Exception e){
-			return "{\"completed\": \"false\", \"message\": \"Transaction was unable to save.\"}";
+			Entity.put("completed", false);
+			Entity.put("message", "Transaction was unable to save");
+			return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
-		return "{\"completed\": true, \"transactionId\": " + transactionId  + "}";
+		Entity.put("completed", true);
+		Entity.put("transactionId", transactionId);
+		return new ResponseEntity<>(Entity, HttpStatus.OK);
 	}
 }
 

@@ -44,11 +44,6 @@ public class TokenManager {
         Claims claims = Jwts.parser()
                 .setSigningKey(key)
                 .parseClaimsJws(jwt).getBody();
-        System.out.println("ID: " + claims.getId());
-        System.out.println("Subject: " + claims.getSubject());
-        System.out.println("Issuer: " + claims.getIssuer());
-        System.out.println("Expiration: " + claims.getExpiration());
-
         return claims;
     }
 

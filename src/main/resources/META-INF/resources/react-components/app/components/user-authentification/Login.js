@@ -24,9 +24,8 @@ class Login extends Component {
         let {email, password} = this.state;
         let data =  {email, password};
         Helpers.login(data, (resp) => {
-            console.log(resp);
-            if(resp.data.completed){
-                cookie.save("sf", resp.data.token, {path: '/'});
+            if(resp.completed){
+                cookie.save("sf", resp.token, {path: '/'});
                 this.props.history.push('/');
             }
         })

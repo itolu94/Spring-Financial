@@ -19,15 +19,13 @@ class Registration extends Component {
     }
     handleSubmit(e){
         e.preventDefault();
-        console.log('function should be called!');
         if(this.state.password !== this.state.password2){
             alert("Passwords to not match")
         }
         let {name, email, password} = this.state;
         let data = {name, email, password};
         Helpers.createAccount(data, (resp)=> {
-            console.log(resp.data.completed);
-            if(resp.data.completed){
+            if(resp.completed){
                 this.props.history.push('/login')
             }
         });

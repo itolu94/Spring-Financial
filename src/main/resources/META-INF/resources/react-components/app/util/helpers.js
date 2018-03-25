@@ -11,7 +11,7 @@ exports.getTransaction = (cb) => {
 };
 
 exports.postTransaction = (transaction, cb) => {
-    axios.post(`/api/add-transaction`, transaction
+    axios.post(`/api/add-transaction`, transaction, {withCredentials: true}
         ).then((response) => {
         cb(response.data);
     }).catch((err) => {
@@ -42,7 +42,7 @@ exports.updateTransaction = (transaction, cb) => {
 exports.createAccount = (userInformation, cb) => {
     axios.post('api/add-person', userInformation
     ).then((response) => {
-        cb(response);
+        cb(response.data);
     });
 };
 
@@ -50,7 +50,7 @@ exports.createAccount = (userInformation, cb) => {
 exports.login = (userInformation, cb) => {
     axios.post('api/login', userInformation
     ).then((response) => {
-        cb(response);
+        cb(response.data);
     }).catch((err) => {
         console.log(err);
         let res  = {completed: false };
