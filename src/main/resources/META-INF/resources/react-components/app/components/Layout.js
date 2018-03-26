@@ -1,75 +1,90 @@
 /*jshint esversion: 6 */
 import React, {Component} from 'react';
+import {
+    BrowserRouter as Router,
+    Link,
+    Route,
+    Switch,
+    withRouter
+
+} from 'react-router-dom';
 import Registration from './user-authentification/Registration';
 import Transactions from "./transactions/Transactions";
 import Login from './user-authentification/Login';
+import cookie from 'react-cookies'
 
-class Layout extends Component {
+
+ class Layout extends Component {
     constructor() {
         super();
         this.state = {
-            logggedIn: false,
-            page: 'transactions'
+            loggedIn: false,
         }
         this.handleNavBar =  this.handleNavBar.bind(this);
-        this.changePage = this.changePage.bind(this);
-        this.handleComponent = this.handleComponent.bind(this);
-    }
-    changePage(page){
-        this.setState({page});
+        this.handleLoggedIn = this.handleLoggedIn.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
-    handleComponent(){
-        switch (this.state.page){
-            case 'transactions':
-                return <Transactions/>
-            case 'sign-up':
-                return <Registration/>
-            case 'login':
-                return <Login />
+    handleLoggedIn(authenticated){
+        switch(authenticated) {
+            case true:
+                this.setState({loggedIn: true});
+                break;
+            case false:
+                this.setState({loggedIn: false});
+                break;
             default:
-                return <Transactions/>
+                this.setState({loggedIn: false});
         }
+    }
+    logout(e){
+        e.preventDefault();
+        cookie.remove("sf");
+        this.props.history.push('/login');
     }
 
     handleNavBar(){
-        if(this.state.logggedIn){
+        if(this.state.loggedIn){
             return (
-                <ul id="nav-mobile" className="left hide-on-med-and-down">
-                     <li><a onClick={() => this.changePage('transactions')}>Transactions</a></li>
+                <ul id="nav-mobile" className="right hide-on-med-and-down">
+                     <li><a onClick={this.logout}>Logout</a></li>
                 </ul>
             )
         } else {
             return (
                 <ul id="nav-mobile" className="left hide-on-med-and-down">
-                    <li><a onClick={() => this.changePage('login')}>Login</a></li>
-                    <li><a onClick={() => this.changePage('sign-up')}>Sign-Up</a></li>
-                    <li><a onClick={() => this.changePage('transactions')}>Transactions</a></li>
+                    <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/create-account">Signup</Link></li>
                 </ul>
             )
         }
     }
     render() {
         return (
-            <div>
-                <nav>
-                    <div className="nav-wrapper">
-                        <a href="#" className="brand-logo center">Spring Financial Assistance </a>
-                        {this.handleNavBar()}
-                    </div>
-                </nav>
-                <div id="pageContent">
-                    <div className="row center-align">
-                        <div className="col s8 offset-s2" id='content'>
-                            <div id='transactionsList'>
-                                {this.handleComponent()}
+                <div>
+                    <nav>
+                        <div className="nav-wrapper">
+                            <a href="#" className="brand-logo center">Spring Financial Assistance </a>
+                            {this.handleNavBar()}
+                        </div>
+                    </nav>
+                    <div id="pageContent">
+                        <div className="row center-align">
+                            <div className="col s8 offset-s2" id='content'>
+                                <div id='transactionsList'>
+                                        <Route path='/login' component={Login} />
+                                        <Route path='/create-account' component={Registration} />
+                                        <Route exact path='/'
+                                               render={(props) => <Transactions {...props} handleLoggedIn={this.handleLoggedIn} />}
+                                        />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         )
     }
 }
 
-export default Layout;
+export default withRouter(Layout)
+

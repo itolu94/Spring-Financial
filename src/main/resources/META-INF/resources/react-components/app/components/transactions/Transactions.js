@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Item from './Items';
 import Helpers from '../../util/helpers';
+import cookie from 'react-cookies'
 
 export default class Transactions extends Component {
     constructor(){
@@ -33,7 +34,9 @@ export default class Transactions extends Component {
                     balance
                 });
             } else {
-                console.log("transaction was not able to be deleted");
+                let sfCookie = cookie.load("sf");
+                if(!sfCookie) this.props.history.push("/login");
+                else console.log("transaction was not able to be deleted");
             }
         })
     }
@@ -45,7 +48,7 @@ export default class Transactions extends Component {
     }
 
     listTransactions() {
-        if(this.state.transactions) {
+        if(this.state.transactions.length >= 1) {
             return this.state.transactions.map((transaction, index) => {
                     return (
                         <div>
@@ -76,12 +79,8 @@ export default class Transactions extends Component {
             Helpers.postTransaction(transaction, (resp) => {
                 if(resp.completed){
                     let balance;
-                    if(this.state.category === "deposit"){
-                        balance = parseInt(this.state.balance) + parseInt(this.state.amount);
-                    }
-                    else {
-                        balance = this.state.balance - this.state.amount;
-                    }
+                    if(this.state.category === "deposit") balance = parseInt(this.state.balance) + parseInt(this.state.amount);
+                    else balance = this.state.balance - this.state.amount;
                     transaction.id = resp.transactionId;
                     this.setState({
                         category: '',
@@ -92,34 +91,37 @@ export default class Transactions extends Component {
                     });
                 }
                 else {
-                    console.log('Your transaction was unable to be added');
+                    let sfCookie = cookie.load("sf");
+                    if(!sfCookie) this.props.history.push("/login");
+                    else console.log("transaction was not able to be deleted");
                 }
             });
     }
-    handleChange(key, e) {
-        this.setState({[key]: e.target.value});
+    handleChange(e) {
+        this.setState({[e.target.name]: e.target.value});
     }
     componentWillMount() {
-        Helpers.getTransaction((res) =>{
-            let transactionLength = res.length;
-            let balance = this.state.balance;
-            if(res){
-                res.map((transaction, index) => {
-                    if(transaction.category === "deposit"){
-                        balance += transaction.amount;
-                    }
-                    else {
-                        balance -= transaction.amount;
-                    }
-                    if ((index + 1) === transactionLength) {
-                        this.setState({
-                            transactions: res,
-                            balance
-                        });
-                    }
-                });
-            }
-        });
+        let sfCookie = cookie.load("sf");
+        if (sfCookie) {
+            this.props.handleLoggedIn(true);
+            Helpers.getTransaction((resp) =>{
+                if(resp){
+                    let balance = this.state.balance;
+                    resp.map((transaction, index) => {
+                        if(transaction.category === "deposit") balance += transaction.amount;
+                        else balance -= transaction.amount;
+                        if ((index + 1) === resp.length) {
+                            this.setState({
+                                transactions: resp,
+                                balance
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            this.props.history.push('/login');
+        }
     }
     render(){
         return (
@@ -130,7 +132,7 @@ export default class Transactions extends Component {
                 </div>
                 <div id='addTransaction'>
                     <form id='newTransactionForm' onSubmit={(e)=> this.newTransaction(e)}>
-                        <select className="catagory" value={this.state.category} onChange={(e) => this.handleChange('category', e)} name="category" required>
+                        <select className="catagory" value={this.state.category} onChange={this.handleChange} name="category" required>
                             <option value="">Select the best option</option>
                             <option value="shopping">Shopping </option>
                             <option value="car"> Car</option>
@@ -139,8 +141,8 @@ export default class Transactions extends Component {
                             <option value="medical">Medical</option>
                             <option value="deposit">Deposit</option>
                         </select>
-                        <input value={this.state.amount} onChange={(e) => this.handleChange('amount', e)} type="number" required placeholder='Amount'/>
-                        <input value={this.state.note} onChange={(e) => this.handleChange('note', e)} type="text" maxLength="25" placeholder='Note'/>
+                        <input value={this.state.amount} onChange={this.handleChange} name="amount" type="number" required placeholder='Amount'/>
+                        <input value={this.state.note} onChange={this.handleChange} name='note' type="text" maxLength="25" placeholder='Note'/>
                         <input type="submit"/>
                     </form>
                 </div>

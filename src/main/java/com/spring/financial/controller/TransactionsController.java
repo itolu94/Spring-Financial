@@ -1,26 +1,32 @@
 package com.spring.financial.controller;
 
+import com.spring.financial.auth.TokenManager;
 import com.spring.financial.database.entity.Transactions;
 import com.spring.financial.database.repository.TransactionsRepository;
+import io.jsonwebtoken.Claims;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 public class TransactionsController {
 
 	@Autowired
 	TransactionsRepository transactionsRepository;
 
-	@RequestMapping(value = "/api/get-transactions", method = RequestMethod.GET)
-	@ResponseBody
-	public List<Transactions> getTransactions(){
+	@GetMapping(value = "/api/get-transactions")
+	public List<Transactions> getTransactions(@CookieValue(value = "sf", defaultValue = "") String sf){
 		List<Transactions> transactionsList = new ArrayList<>();
 		try {
-			transactionsList =	transactionsRepository.findAll();
+			Claims claims = TokenManager.parseJWT(sf);
+			Integer userId = Integer.parseInt(claims.getSubject());
+			transactionsList =	transactionsRepository.findByUserId(userId);
 		}
 		catch (Exception e){
 			return transactionsList;
@@ -28,51 +34,64 @@ public class TransactionsController {
 		return transactionsList;
 	}
 
-	@RequestMapping(value = "/api/add-transaction", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String saveTransaction(@RequestBody Transactions transaction) {
-		Integer transactionId;
-		try {
-			Date date = new Date();
-			transaction.setCreated(date);
-			transactionsRepository.save(transaction);
-			transactionId = transaction.getId();
+	@PostMapping(value = "/api/add-transaction")
+	public ResponseEntity<Object> saveTransaction(@RequestBody Transactions transaction, @CookieValue(value = "sf", defaultValue = "") String sf) {
+		JSONObject Entity = new JSONObject();
+		if (!sf.isEmpty()) {
+			try {
+				Claims claims = TokenManager.parseJWT(sf);
+				Integer userId = Integer.parseInt(claims.getSubject());
+				Date date = new Date();
+				transaction.setCreated(date);
+				transaction.setUserId(userId);
+				transactionsRepository.save(transaction);
+				Entity.put("completed", true);
+				Entity.put("transactionId", transaction.getId());
+				return new ResponseEntity<>(Entity, HttpStatus.OK);
+			} catch (Exception e) {
+				Entity.put("completed", false);
+				Entity.put("message", "Transaction was unable to save");
+				return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
-		catch (Exception e){
-			return "{\"completed\": \"false\", \"message\": \"Transaction was unable to save.\"}";
-
-		}
-		return "{\"completed\": true, \"transactionId\": " + transactionId  + "}";
+		Entity.put("completed", false);
+		Entity.put("message", "Please login");
+		return new ResponseEntity<>(Entity, HttpStatus.UNAUTHORIZED);
 	}
 
-
-
-	@RequestMapping(value = "/api/delete-transaction", method = RequestMethod.DELETE)
-	@ResponseBody
-	public String deleteTransaction(@RequestParam Integer transactionId) {
+	@DeleteMapping(value = "/api/delete-transaction")
+	public ResponseEntity<Object> deleteTransaction(@RequestParam Integer transactionId) {
+		JSONObject Entity = new JSONObject();
 		try {
 			transactionsRepository.deleteById(transactionId);
 		}
 		catch (Exception e){
-			return "{\"completed\" : \"false\", \"message \": \"Transaction was unable to be delete.\"}";
+			Entity.put("completed", false);
+			Entity.put("message", "Transaction was unable to be delete");
+			return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
-		return "{\"completed\": \"true\"}";
+		Entity.put("completed", true);
+		return new ResponseEntity<>(Entity, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/api/update-transaction", method = RequestMethod.PUT, produces = "application/json")
-	@ResponseBody
-	public String updateTransaction(@RequestBody Transactions transaction) {
+	@PutMapping(value = "/api/update-transaction")
+	public ResponseEntity<Object>  updateTransaction(@RequestBody Transactions transaction) {
+		JSONObject Entity = new JSONObject();
 		Integer transactionId;
 		try {
 			transactionsRepository.save(transaction);
 			transactionId = transaction.getId();
 		}
 		catch (Exception e){
-			return "{\"completed\": \"false\", \"message\": \"Transaction was unable to save.\"}";
+			Entity.put("completed", false);
+			Entity.put("message", "Transaction was unable to save");
+			return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
-		return "{\"completed\": true, \"transactionId\": " + transactionId  + "}";
+		Entity.put("completed", true);
+		Entity.put("transactionId", transactionId);
+		return new ResponseEntity<>(Entity, HttpStatus.OK);
 	}
 }
 

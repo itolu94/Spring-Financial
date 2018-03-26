@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 import React, {Component} from 'react';
+import Helpers from '../../util/helpers'
 
 class Registration extends Component {
     constructor() {
@@ -18,7 +19,16 @@ class Registration extends Component {
     }
     handleSubmit(e){
         e.preventDefault();
-        console.log('Account was about to be created!');
+        if(this.state.password !== this.state.password2){
+            alert("Passwords to not match")
+        }
+        let {name, email, password} = this.state;
+        let data = {name, email, password};
+        Helpers.createAccount(data, (resp)=> {
+            if(resp.completed){
+                this.props.history.push('/login')
+            }
+        });
     }
     render() {
         return (
@@ -39,7 +49,7 @@ class Registration extends Component {
                         <input value={this.state.password2} onChange={this.handleChange} placeholder='Password' required name='password2' id="password2" type="password"/>
                     </div>
                     <br/>
-                        <input value='Sign Up' className="btn-large btn-signup verificationBtn" type="submit" />
+                    <input value='Sign Up' className="btn-large btn-signup verificationBtn" type="submit" />
                 </form>
             </div>
         )

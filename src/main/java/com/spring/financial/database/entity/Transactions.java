@@ -28,14 +28,6 @@ public class Transactions {
 	public Transactions() {
 	}
 
-	public Transactions(int userId, int amount, String category, String note, Date created) {
-		this.userId = userId;
-		this.amount = amount;
-		this.category = category;
-		this.note = note;
-		this.created = created;
-	}
-
 	public int getUserId() {
 		return userId;
 	}
