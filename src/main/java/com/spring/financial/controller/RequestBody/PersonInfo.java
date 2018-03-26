@@ -1,4 +1,4 @@
-package com.spring.financial.database.entity;
+package com.spring.financial.controller.RequestBody;
 
 
 public class PersonInfo {

@@ -1,26 +1,35 @@
 package com.spring.financial.controller;
 
 
-import com.spring.financial.api.APIManager;
-import com.spring.financial.database.entity.Transactions;
+import com.spring.financial.api.ApiManager;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class StocksController {
 
+    @Autowired
+    ApiManager apiManager;
+    JSONParser parser = new JSONParser();
+
     @GetMapping(value = "/api/get-stocks")
-    public ResponseEntity<String> getSockValue(@CookieValue(value = "sf", defaultValue = "") String sf){
-        APIManager apiManager = new APIManager();
-        String response = apiManager.get("Googl");
-        System.out.println(response);
-        return new ResponseEntity ("OK", HttpStatus.ACCEPTED);
+    public ResponseEntity<String> getSockValue(@RequestParam String Stock, @CookieValue(value = "sf", defaultValue = "") String sf){
+       try {
+           ResponseEntity<String> response = apiManager.get(Stock);
+           JSONObject responseObject =  (JSONObject) parser.parse(response.getBody());
+           if(responseObject.containsKey("Error Message")) return new ResponseEntity<> ("Stock does not exist", HttpStatus.NOT_FOUND);
+           else return new ResponseEntity<> (response.getBody(), HttpStatus.ACCEPTED);
+       }
+       catch(Exception e){
+            return new ResponseEntity<> ("Internal error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
