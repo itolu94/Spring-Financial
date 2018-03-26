@@ -22,11 +22,11 @@ public class TransactionsController {
 
 	@GetMapping(value = "/api/get-transactions")
 	public List<Transactions> getTransactions(@CookieValue(value = "sf", defaultValue = "") String sf){
-		Claims claims = TokenManager.parseJWT(sf);
-		String userEmail = claims.getSubject();
 		List<Transactions> transactionsList = new ArrayList<>();
 		try {
-			transactionsList =	transactionsRepository.findByUserEmail(userEmail);
+			Claims claims = TokenManager.parseJWT(sf);
+			Integer userId = Integer.parseInt(claims.getSubject());
+			transactionsList =	transactionsRepository.findByUserId(userId);
 		}
 		catch (Exception e){
 			return transactionsList;
@@ -40,10 +40,10 @@ public class TransactionsController {
 		if (!sf.isEmpty()) {
 			try {
 				Claims claims = TokenManager.parseJWT(sf);
-				String userEmail = claims.getSubject();
+				Integer userId = Integer.parseInt(claims.getSubject());
 				Date date = new Date();
 				transaction.setCreated(date);
-				transaction.setUserEmail(userEmail);
+				transaction.setUserId(userId);
 				transactionsRepository.save(transaction);
 				Entity.put("completed", true);
 				Entity.put("transactionId", transaction.getId());

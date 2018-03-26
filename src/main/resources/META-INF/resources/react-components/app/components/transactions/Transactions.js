@@ -34,7 +34,9 @@ export default class Transactions extends Component {
                     balance
                 });
             } else {
-                console.log("transaction was not able to be deleted");
+                let sfCookie = cookie.load("sf");
+                if(!sfCookie) this.props.history.push("/login");
+                else console.log("transaction was not able to be deleted");
             }
         })
     }
@@ -46,7 +48,7 @@ export default class Transactions extends Component {
     }
 
     listTransactions() {
-        if(this.state.transactions) {
+        if(this.state.transactions.length >= 1) {
             return this.state.transactions.map((transaction, index) => {
                     return (
                         <div>
@@ -77,12 +79,8 @@ export default class Transactions extends Component {
             Helpers.postTransaction(transaction, (resp) => {
                 if(resp.completed){
                     let balance;
-                    if(this.state.category === "deposit"){
-                        balance = parseInt(this.state.balance) + parseInt(this.state.amount);
-                    }
-                    else {
-                        balance = this.state.balance - this.state.amount;
-                    }
+                    if(this.state.category === "deposit") balance = parseInt(this.state.balance) + parseInt(this.state.amount);
+                    else balance = this.state.balance - this.state.amount;
                     transaction.id = resp.transactionId;
                     this.setState({
                         category: '',
@@ -93,7 +91,9 @@ export default class Transactions extends Component {
                     });
                 }
                 else {
-                    console.log('Your transaction was unable to be added');
+                    let sfCookie = cookie.load("sf");
+                    if(!sfCookie) this.props.history.push("/login");
+                    else console.log("transaction was not able to be deleted");
                 }
             });
     }
@@ -103,20 +103,16 @@ export default class Transactions extends Component {
     componentWillMount() {
         let sfCookie = cookie.load("sf");
         if (sfCookie) {
-            Helpers.getTransaction((res) =>{
-                let transactionLength = res.length;
-                let balance = this.state.balance;
-                if(res){
-                    res.map((transaction, index) => {
-                        if(transaction.category === "deposit"){
-                            balance += transaction.amount;
-                        }
-                        else {
-                            balance -= transaction.amount;
-                        }
-                        if ((index + 1) === transactionLength) {
+            this.props.handleLoggedIn(true);
+            Helpers.getTransaction((resp) =>{
+                if(resp){
+                    let balance = this.state.balance;
+                    resp.map((transaction, index) => {
+                        if(transaction.category === "deposit") balance += transaction.amount;
+                        else balance -= transaction.amount;
+                        if ((index + 1) === resp.length) {
                             this.setState({
-                                transactions: res,
+                                transactions: resp,
                                 balance
                             });
                         }

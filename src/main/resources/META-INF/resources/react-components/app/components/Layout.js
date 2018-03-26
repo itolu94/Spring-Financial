@@ -5,23 +5,24 @@ import {
     Link,
     Route,
     Switch,
+    withRouter
+
 } from 'react-router-dom';
 import Registration from './user-authentification/Registration';
 import Transactions from "./transactions/Transactions";
 import Login from './user-authentification/Login';
+import cookie from 'react-cookies'
 
-class Layout extends Component {
+
+ class Layout extends Component {
     constructor() {
         super();
         this.state = {
             loggedIn: false,
         }
         this.handleNavBar =  this.handleNavBar.bind(this);
-        this.changePage = this.changePage.bind(this);
         this.handleLoggedIn = this.handleLoggedIn.bind(this);
-    }
-    changePage(page){
-        this.setState({page});
+        this.logout = this.logout.bind(this);
     }
 
     handleLoggedIn(authenticated){
@@ -36,12 +37,17 @@ class Layout extends Component {
                 this.setState({loggedIn: false});
         }
     }
+    logout(e){
+        e.preventDefault();
+        cookie.remove("sf");
+        this.props.history.push('/login');
+    }
 
     handleNavBar(){
         if(this.state.loggedIn){
             return (
-                <ul id="nav-mobile" className="left hide-on-med-and-down">
-                     <li><a onClick={() => this.changePage('transactions')}>Transactions</a></li>
+                <ul id="nav-mobile" className="right hide-on-med-and-down">
+                     <li><a onClick={this.logout}>Logout</a></li>
                 </ul>
             )
         } else {
@@ -66,11 +72,11 @@ class Layout extends Component {
                         <div className="row center-align">
                             <div className="col s8 offset-s2" id='content'>
                                 <div id='transactionsList'>
-                                    <Switch>
                                         <Route path='/login' component={Login} />
                                         <Route path='/create-account' component={Registration} />
-                                        <Route exact path='/' component={Transactions} handleLoggedIn={this.handleLoggedIn} />
-                                    </Switch>
+                                        <Route exact path='/'
+                                               render={(props) => <Transactions {...props} handleLoggedIn={this.handleLoggedIn} />}
+                                        />
                                 </div>
                             </div>
                         </div>
@@ -80,4 +86,5 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+export default withRouter(Layout)
+

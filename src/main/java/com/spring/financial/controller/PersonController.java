@@ -44,8 +44,9 @@ public class PersonController {
         if(!personRepository.findByEmail(email).isEmpty()){
             Person person = personRepository.findByEmail(email).get(0);
             String hashPassword = person.getPassword();
+            Integer userID = person.getId();
             if (HashManager.checkpw(password, hashPassword)) {
-                String token = TokenManager.createJWT(email);
+                String token = TokenManager.createJWT(userID.toString());
                 Entity.put("completed", true);
                 Entity.put("token", token);
                 return new ResponseEntity<>(Entity, HttpStatus.OK);

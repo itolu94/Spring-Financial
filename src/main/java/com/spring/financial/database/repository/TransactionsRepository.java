@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface TransactionsRepository extends JpaRepository<Transactions, Integer> {
-    List<Transactions> findByUserEmail(String userEmail);
+    List<Transactions> findByUserId(Integer userID);
 }

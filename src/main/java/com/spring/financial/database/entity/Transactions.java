@@ -11,7 +11,7 @@ public class Transactions {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	private String userEmail;
+	private int userId;
 	private int amount;
 	private String category;
 	private String note;
@@ -28,12 +28,12 @@ public class Transactions {
 	public Transactions() {
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public Date getCreated() {
