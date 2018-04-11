@@ -20,8 +20,7 @@ public class PersonController {
     PersonRepository personRepository;
 
     @PostMapping(value = "/api/add-person")
-    public ResponseEntity<Object> addPerson(@RequestBody Person person, @CookieValue(value = "sf", defaultValue = "") String sf) {
-        System.out.println(sf);
+    public ResponseEntity<Object> addPerson(@RequestBody Person person) {
         JSONObject Entity = new JSONObject();
         if(personRepository.findByEmail(person.getEmail()).isEmpty()){
             String hashedPassword = HashManager.hashpw(person.getPassword());
@@ -36,6 +35,7 @@ public class PersonController {
             return new ResponseEntity<>(Entity, HttpStatus.CONFLICT);
         }
     }
+
     @PostMapping(value = "/api/login")
     public ResponseEntity<Object> login(@RequestBody PersonInfo personInfo) {
         JSONObject Entity = new JSONObject();

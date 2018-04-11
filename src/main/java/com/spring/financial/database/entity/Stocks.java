@@ -4,7 +4,7 @@ package com.spring.financial.database.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="PERSON")
+@Table(name="STOCKS")
 public class Stocks {
 
     @Id

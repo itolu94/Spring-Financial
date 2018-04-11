@@ -21,9 +21,9 @@ public class StocksController {
     JSONParser parser = new JSONParser();
 
     @GetMapping(value = "/api/get-stocks")
-    public ResponseEntity<String> getSockValue(@RequestParam String Stock, @CookieValue(value = "sf", defaultValue = "") String sf){
+    public ResponseEntity<String> getSockValue(@RequestParam String stock, @CookieValue(value = "sf", defaultValue = "") String sf){
        try {
-           ResponseEntity<String> response = apiManager.get(Stock);
+           ResponseEntity<String> response = apiManager.get(stock);
            JSONObject responseObject =  (JSONObject) parser.parse(response.getBody());
            if(responseObject.containsKey("Error Message")) return new ResponseEntity<> ("Stock does not exist", HttpStatus.NOT_FOUND);
            else return new ResponseEntity<> (response.getBody(), HttpStatus.ACCEPTED);

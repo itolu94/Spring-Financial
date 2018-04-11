@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import Registration from './user-authentification/Registration';
 import Transactions from "./transactions/Transactions";
+import Stocks from './stocks/Stocks';
 import Login from './user-authentification/Login';
 import cookie from 'react-cookies'
 
@@ -48,6 +49,7 @@ import cookie from 'react-cookies'
             return (
                 <ul id="nav-mobile" className="right hide-on-med-and-down">
                      <li><a onClick={this.logout}>Logout</a></li>
+                     <li><Link to="/stock-market">Stocks</Link></li>
                 </ul>
             )
         } else {
@@ -55,6 +57,7 @@ import cookie from 'react-cookies'
                 <ul id="nav-mobile" className="left hide-on-med-and-down">
                     <li><Link to="/login">Login</Link></li>
                     <li><Link to="/create-account">Signup</Link></li>
+                    <li><Link to="/stock-market">Stocks</Link></li>
                 </ul>
             )
         }
@@ -74,8 +77,9 @@ import cookie from 'react-cookies'
                                 <div id='transactionsList'>
                                         <Route path='/login' component={Login} />
                                         <Route path='/create-account' component={Registration} />
-                                        <Route exact path='/'
-                                               render={(props) => <Transactions {...props} handleLoggedIn={this.handleLoggedIn} />}
+                                        <Route path='/stock-market' component={Stocks} />
+\                                        <Route exact path='/'
+                                               render={(props) => <Transactions {...props} handleLoggedIn={this.handleLoggedIn} /> }
                                         />
                                 </div>
                             </div>

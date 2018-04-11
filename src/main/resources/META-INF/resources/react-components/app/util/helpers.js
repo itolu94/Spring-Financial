@@ -57,3 +57,14 @@ exports.login = (userInformation, cb) => {
         cb(res);
     })
 };
+
+exports.getStocks = (stock, cb) => {
+    axios.get(`/api/get-stocks?stock=${stock}`
+    ).then((response) => {
+        cb(response.data)
+    }).catch((err) =>{
+        console.log(err);
+        let res =  {completed: false}
+        cb(res);
+    })
+}
