@@ -1,11 +1,9 @@
 package com.spring.financial.api;
 
 import org.json.simple.JSONObject;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -14,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class ApiManager {
   private String apiKey =  System.getenv("ALPHA_VANTAGE");
-  private String server = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY";
+  private String server = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&interval=60min";
   private RestTemplate rest;
   private HttpHeaders headers;
 
@@ -25,7 +23,7 @@ public class ApiManager {
     headers.add("Accept", "*/*");
   }
 
-  public ResponseEntity<String> get(String uri) {
+  public ResponseEntity<String> getStocks(String uri) {
     JSONObject Entity = new JSONObject();
     String url = server + "&symbol="+ uri + "&apikey=" + apiKey;
     HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);

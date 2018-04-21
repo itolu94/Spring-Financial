@@ -78,9 +78,7 @@ import cookie from 'react-cookies'
                                         <Route path='/login' component={Login} />
                                         <Route path='/create-account' component={Registration} />
                                         <Route path='/stock-market' component={Stocks} />
-\                                        <Route exact path='/'
-                                               render={(props) => <Transactions {...props} handleLoggedIn={this.handleLoggedIn} /> }
-                                        />
+\                                        <Route exact path='/' render={(props) => <Transactions {...props} handleLoggedIn={this.handleLoggedIn} />} />
                                 </div>
                             </div>
                         </div>

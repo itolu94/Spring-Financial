@@ -8,6 +8,7 @@ module.exports = {
     filename: "./../js/bundle.js"
   },
 
+
   // This section desribes the transformations we will perform
   module: {
     loaders: [

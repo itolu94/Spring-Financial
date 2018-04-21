@@ -11,7 +11,9 @@
   "license": "",
   "dependencies": {
     "axios": "^0.16.2",
+    "chartist": "^0.11.0",
     "react": "^0.14.9",
+    "react-chartist": "^0.13.1",
     "react-cookie": "^2.1.4",
     "react-cookies": "^0.1.0",
     "react-dom": "^0.14.9",
