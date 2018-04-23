@@ -71,9 +71,9 @@ exports.getStocks = (stock, cb) => {
         resp.completed=true;
         let int = 0;
         for (let key in data) {
-            if(int <= 5){
+            if(int <= 8){
                 int++;
-                stocks.labels.push(key);
+                stocks.labels.push(key.slice(5, 10) + '\n' + key.slice(10 ,-3)) ;
                 stocks.series.push(parseInt(data[key]["1. open"]));
             } else {
                 break;

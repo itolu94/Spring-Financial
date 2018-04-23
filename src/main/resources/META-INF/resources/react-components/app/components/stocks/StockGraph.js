@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import ChartlistGraph from 'react-chartist';
+import ChartistGraph from 'react-chartist';
+import ChartistPlugin from 'chartist-plugin-axistitle';
+
 
 export default class StockGraph extends Component  {
     constructor(){
@@ -18,11 +20,34 @@ export default class StockGraph extends Component  {
                 labels,
                 series: [
                     series
+                ],
+                plugins: [
+                    ChartistPlugin({
+                        axisX: {
+                            axisTitle: 'Time (mins)',
+                            axisClass: 'ct-axis-title-test',
+                            offset: {
+                                x: 0,
+                                y: 50
+                            },
+                            textAnchor: 'middle'
+                        },
+                        axisY: {
+                            axisTitle: 'Goals',
+                            axisClass: 'ct-axis-title-test2',
+                            offset: {
+                                x: 0,
+                                y: -1
+                            },
+                            flipTitle: false
+                        }
+                    })
                 ]
             }
-
-            return <ChartlistGraph data={data} type={'Line'}/>
-
+            let options = {
+                stroke: 'blue',
+            }
+            return <ChartistGraph data={data} type={'Line'} options={options}/>
         } else {
             //TODO update error handling
             // console.log('no data was passed down')
