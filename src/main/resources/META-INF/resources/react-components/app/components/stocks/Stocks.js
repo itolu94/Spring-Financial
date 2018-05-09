@@ -13,8 +13,9 @@ export default class Stocks extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.searchStock = this.searchStock.bind(this);
-
+        this.saveStock = this.saveStock.bind(this);
     }
+
     searchStock(e){
         e.preventDefault();
         let {stock} = this.state;
@@ -23,14 +24,27 @@ export default class Stocks extends Component {
                 this.setState({stockData: resp.data});
             } else {
                 //TODO create proper error handling!
+                this.setState({stockData: {}});
                 console.log(resp);
             }
         })
     }
 
+    saveStock(e){
+        e.preventDefault();
+        let stock = this.state.stock;
+        Helpers.saveStock(stock, (resp) =>{
+            if(resp.completed) {
+                console.log('Stock was saved');
+            } else {
+                console.log('Stock was unable to be saved');
+            }
+        });
+    }
     handleChange(e) {
         this.setState({[e.target.name]: e.target.value});
     }
+
     render(){
         return (
             <div>
@@ -44,6 +58,7 @@ export default class Stocks extends Component {
                 />
                 <StockGraph
                     stockData={this.state.stockData}
+                    saveStock={this.saveStock}
                 />
             </div>
         )

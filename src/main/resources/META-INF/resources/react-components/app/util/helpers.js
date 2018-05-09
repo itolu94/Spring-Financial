@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//TODO update all api calls to handle bad request (check status code)
 exports.getTransaction = (cb) => {
     axios.get('/api/get-transactions').then((response) => {
         cb(response.data);
@@ -61,6 +62,7 @@ exports.login = (userInformation, cb) => {
 exports.getStocks = (stock, cb) => {
     axios.get(`/api/get-stocks?stock=${stock}`
     ).then((response) => {
+        //TODO refine function
         let data = response.data["Time Series (60min)"];
         let stocks = {};
         let resp = {};
@@ -79,6 +81,8 @@ exports.getStocks = (stock, cb) => {
                 break;
             }
         }
+        stocks.label = stocks.labels.reverse();
+        stocks.series= stocks.series.reverse();
         resp.data = stocks;
         cb(resp)
     }).catch((err) =>{
@@ -86,4 +90,17 @@ exports.getStocks = (stock, cb) => {
         let res =  {completed: false}
         cb(res);
     })
+}
+
+
+exports.saveStock = (stock, cb) => {
+    axios.post('api/save-stock', stock
+    ).then((response) => {
+        console.log(response);
+        return cb(response);
+    }).catch((err) => {
+      console.log(err);
+      let response = {completed: false};
+      return cb(response);
+    });
 }

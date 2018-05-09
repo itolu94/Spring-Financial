@@ -41,6 +41,7 @@ import cookie from 'react-cookies'
     logout(e){
         e.preventDefault();
         cookie.remove("sf");
+        this.handleLoggedIn(false);
         this.props.history.push('/login');
     }
 

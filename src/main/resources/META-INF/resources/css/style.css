@@ -37,11 +37,11 @@ body{
     padding-bottom: 20px;
 }
 
-#transactionsContent input, #stocksContent input{
-    width: 50%;
+#transactionsContent input, .stocksContent input{
+    width: 50% !important;
     clear: right;
     display: block;
-    margin: 0 25%
+    margin: 0 25% !important;
 }
 
 .category{
@@ -79,7 +79,7 @@ body{
     font-size: 200%;
 }
 
-#newTransactionForm, #stocksForm{
+#newTransactionForm, .stocksForm{
     width: 100%;
 }
 

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ChartistGraph from 'react-chartist';
-import ChartistPlugin from 'chartist-plugin-axistitle';
 
 
 export default class StockGraph extends Component  {
@@ -20,38 +19,27 @@ export default class StockGraph extends Component  {
                 labels,
                 series: [
                     series
-                ],
-                plugins: [
-                    ChartistPlugin({
-                        axisX: {
-                            axisTitle: 'Time (mins)',
-                            axisClass: 'ct-axis-title-test',
-                            offset: {
-                                x: 0,
-                                y: 50
-                            },
-                            textAnchor: 'middle'
-                        },
-                        axisY: {
-                            axisTitle: 'Goals',
-                            axisClass: 'ct-axis-title-test2',
-                            offset: {
-                                x: 0,
-                                y: -1
-                            },
-                            flipTitle: false
-                        }
-                    })
                 ]
             }
             let options = {
                 stroke: 'blue',
             }
-            return <ChartistGraph data={data} type={'Line'} options={options}/>
+            return (
+                <div>
+                    <ChartistGraph data={data} type={'Line'} options={options}/>
+                    <div className='stocksContent'>
+                        <form className='stocksForm' onSubmit={(e) => this.props.saveStock(e)}>
+                            <input type="submit" >Save Stock</input>
+                        </form>
+                    </div>
+                </div>
+            )
         } else {
+
             //TODO update error handling
             // console.log('no data was passed down')
             return <p>Search for a stock!</p>
+
         }
     }
     render() {

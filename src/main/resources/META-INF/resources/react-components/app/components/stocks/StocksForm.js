@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 
 const StocksForm = ({handleChange, searchStock, stock}) => {
     return (
-        <div id='stocksContent'>
-            <form id='stocksForm' onSubmit={searchStock}>
+        <div className='stocksContent'>
+            <form className='stocksForm' onSubmit={searchStock}>
                 <input
                     value={stock}
                     onChange={handleChange}

@@ -12,9 +12,13 @@ public class Stocks {
     private int id;
     private int userId;
     private String stockName;
-    private int StocksOwned;
 
     public Stocks() {
+    }
+
+    public Stocks(int userId, String stockName) {
+        this.userId = userId;
+        this.stockName = stockName;
     }
 
     public int getId() {
@@ -41,11 +45,4 @@ public class Stocks {
         this.stockName = stockName;
     }
 
-    public int getStocksOwned() {
-        return StocksOwned;
-    }
-
-    public void setStocksOwned(int stocksOwned) {
-        StocksOwned = stocksOwned;
-    }
 }
