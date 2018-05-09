@@ -96,11 +96,11 @@ exports.getStocks = (stock, cb) => {
 exports.saveStock = (stock, cb) => {
     axios.post('api/save-stock', stock
     ).then((response) => {
-        console.log(response);
-        return cb(response);
+        // console.log(response);
+        cb(response.data);
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
       let response = {completed: false};
-      return cb(response);
+        cb(response);
     });
 }

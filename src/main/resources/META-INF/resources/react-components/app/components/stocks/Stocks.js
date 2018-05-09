@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Helpers from '../../util/helpers';
 import StocksForm from './StocksForm';
 import StockGraph from './StockGraph';
+import SavedStocks from './SavedStocks';
 
 export default class Stocks extends Component {
     constructor(){
@@ -9,7 +10,8 @@ export default class Stocks extends Component {
         this.state= {
             transactions: '',
             stock: '',
-            stockData: {}
+            stockData: {},
+            savedStocks: []
         };
         this.handleChange = this.handleChange.bind(this);
         this.searchStock = this.searchStock.bind(this);
@@ -35,7 +37,9 @@ export default class Stocks extends Component {
         let stock = this.state.stock;
         Helpers.saveStock(stock, (resp) =>{
             if(resp.completed) {
-                console.log('Stock was saved');
+                let savedStocks = this.state.savedStocks.slice();
+                savedStocks.push(stock);
+                this.setState({savedStocks});
             } else {
                 console.log('Stock was unable to be saved');
             }
@@ -55,6 +59,9 @@ export default class Stocks extends Component {
                     handleChange={this.handleChange}
                     stock={this.state.stock}
                     searchStock={this.searchStock}
+                />
+                <SavedStocks
+                    savedStocks={this.state.savedStocks}
                 />
                 <StockGraph
                     stockData={this.state.stockData}
