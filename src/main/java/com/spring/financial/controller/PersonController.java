@@ -52,7 +52,7 @@ public class PersonController {
                 return new ResponseEntity<>(Entity, HttpStatus.OK);
             } else {
                 Entity.put("completed", false);
-                Entity.put("message", "Invalid credentials");
+                Entity.put("message", "Invalid password");
                 return new ResponseEntity<>(Entity, HttpStatus.UNAUTHORIZED);
             }
         }

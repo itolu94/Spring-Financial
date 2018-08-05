@@ -54,7 +54,7 @@ exports.login = (userInformation, cb) => {
         cb(response.data);
     }).catch((err) => {
         console.log(err);
-        let res  = {completed: false };
+        let res  = err.response.data;
         cb(res);
     })
 };

@@ -49,8 +49,9 @@ import cookie from 'react-cookies'
         if(this.state.loggedIn){
             return (
                 <ul id="nav-mobile" className="right hide-on-med-and-down">
-                     <li><a onClick={this.logout}>Logout</a></li>
-                     <li><Link to="/stock-market">Stocks</Link></li>
+                    <li><Link to="/">Transactions</Link></li>
+                    <li><a onClick={this.logout}>Logout</a></li>
+                    <li><Link to="/stock-market">Stocks</Link></li>
                 </ul>
             )
         } else {

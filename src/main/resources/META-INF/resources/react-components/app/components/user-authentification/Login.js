@@ -10,6 +10,7 @@ export default class Login extends Component {
         this.state={
             email: '',
             password: '',
+            message: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,18 +28,21 @@ export default class Login extends Component {
             if(resp.completed){
                 cookie.save("sf", resp.token, {path: '/'});
                 this.props.history.push('/');
+            } else {
+                this.setState({message: resp.message});
             }
-        })
+        });
     }
 
     registrationPage(){
-        this.props.history.push('/registration');
+        this.props.history.push('/create-account');
     }
 
     render() {
         return (
             <div className='verification'>
                 <p className='verificationHeader'>Login</p>
+                <p id="loginError">{this.state.message}</p>
                 <form onSubmit={this.handleSubmit} action="/login" method="POST">
                     <div >
                         <input onChange={this.handleChange} placeholder='Email'  name='email' type='email' id="email"  required/>
