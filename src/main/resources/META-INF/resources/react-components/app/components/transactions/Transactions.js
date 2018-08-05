@@ -127,12 +127,12 @@ export default class Transactions extends Component {
         return (
             <div>
                 <div>
-                    <h3 id="balanceHeader">Balance</h3>
+                    <h3 className="pageHeader">Balance</h3>
                     <p id="balance">{this.state.balance}</p>
                 </div>
-                <div id='addTransaction'>
+                <div id='transactionsContent'>
                     <form id='newTransactionForm' onSubmit={(e)=> this.newTransaction(e)}>
-                        <select className="catagory" value={this.state.category} onChange={this.handleChange} name="category" required>
+                        <select className="category" value={this.state.category} onChange={this.handleChange} name="category" required>
                             <option value="">Select the best option</option>
                             <option value="shopping">Shopping </option>
                             <option value="car"> Car</option>

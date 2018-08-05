@@ -24,7 +24,7 @@ body{
     height: 200px;
 }
 
-#balanceHeader{
+#pageHeader{
     text-decoration: underline;
     margin: 0;
 }
@@ -32,19 +32,19 @@ body{
 #balance{
     margin: 10px 0;
 }
-#addTransaction {
+#transactionsContent, #stocksContent {
     border-bottom: 2px black solid;
     padding-bottom: 20px;
 }
 
-#addTransaction input{
-    width: 50%;
+#transactionsContent input, .stocksContent input{
+    width: 50% !important;
     clear: right;
     display: block;
-    margin: 0 25%
+    margin: 0 25% !important;
 }
 
-.catagory{
+.category{
     width:52%;
     display: inline;
 }
@@ -79,7 +79,7 @@ body{
     font-size: 200%;
 }
 
-#newTransactionForm{
+#newTransactionForm, .stocksForm{
     width: 100%;
 }
 
@@ -96,12 +96,21 @@ body{
     border-radius: 25px;
 }
 
+.sSOuterDiv{
+    margin: 1% 0 ;
+}
+
+.sSInnerDiv{
+    display: inline;
+    margin: 0 1%;
+}
+
 @media only screen and (max-width: 850px) {
     nav .brand-logo {
         font-size: 1.4rem;
     }
 
-    #addTransaction input{
+    #transactionsContent input, #stocksContent input{
         width: 100%;
         display: block;
         margin: 0;
@@ -112,7 +121,7 @@ body{
         margin: 0 5%;
     }
 
-    .catagory{
+    .category{
         width: 100%;
         display: inline;
     }
@@ -133,7 +142,7 @@ body{
         height: 230px;
     }
 
-    #addTransaction input{
+    #transactionsContent input, #stocksContent input{
         width: 100%;
         clear: right;
         display: block;
