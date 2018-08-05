@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Helpers from '../../util/helpers';
 import StocksForm from './StocksForm';
 import StockGraph from './StockGraph';
-import SavedStocks from './SavedStocks';
+import UsersStocks from './UsersStocks';
 
 export default class Stocks extends Component {
     constructor(){
@@ -11,16 +11,16 @@ export default class Stocks extends Component {
             transactions: '',
             stock: '',
             stockData: {},
-            savedStocks: []
+            usersStocks: []
         };
         this.handleChange = this.handleChange.bind(this);
-        this.searchStock = this.searchStock.bind(this);
+        this.searchForStock = this.searchForStock.bind(this);
         this.saveStock = this.saveStock.bind(this);
     }
 
-    searchStock(e){
+    searchForStock(e, contex){
         e.preventDefault();
-        let {stock} = this.state;
+        let stock =  this.state.stock || contex;
         Helpers.getStocks(stock, (resp) => {
             if(resp.completed){
                 this.setState({stockData: resp.data});
@@ -32,18 +32,21 @@ export default class Stocks extends Component {
         })
     }
 
-    saveStock(e){
+    saveStock(e, stockName){
         e.preventDefault();
-        let stock = this.state.stock;
-        Helpers.saveStock(stock, (resp) =>{
-            if(resp.completed) {
-                let savedStocks = this.state.savedStocks.slice();
-                savedStocks.push(stock);
-                this.setState({savedStocks});
-            } else {
-                console.log('Stock was unable to be saved');
-            }
-        });
+        //TODO create else function to handle error
+        if(stockName !== ""){
+            Helpers.saveStock(stockName, (resp) =>{
+                if(resp.completed) {
+                    let usersStocks = this.state.usersStocks.slice();
+                    usersStocks.push(stockName);
+                    this.setState({usersStocks});
+                } else {
+                    console.log('Stock was unable to be saved');
+                }
+            });
+        }
+
     }
     handleChange(e) {
         this.setState({[e.target.name]: e.target.value});
@@ -58,10 +61,11 @@ export default class Stocks extends Component {
                 <StocksForm
                     handleChange={this.handleChange}
                     stock={this.state.stock}
-                    searchStock={this.searchStock}
+                    searchForStock={this.searchForStock}
                 />
-                <SavedStocks
-                    savedStocks={this.state.savedStocks}
+                <UsersStocks
+                    usersStocks={this.state.usersStocks}
+                    searchForStock={this.searchForStock}
                 />
                 <StockGraph
                     stockData={this.state.stockData}

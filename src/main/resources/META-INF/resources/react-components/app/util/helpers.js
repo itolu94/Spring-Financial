@@ -67,22 +67,20 @@ exports.getStocks = (stock, cb) => {
         let stocks = {};
         let resp = {};
         let tmp = {};
-        tmp.data = [];
         stocks.labels = [];
         stocks.series = [];
+        tmp.data = [];
         resp.completed=true;
         let int = 0;
         for (let key in data) {
-            if(int <= 8){
-                int++;
+            if(int++ <= 8){
                 stocks.labels.push(key.slice(5, 10) + '\n' + key.slice(10 ,-3)) ;
                 stocks.series.push(parseInt(data[key]["1. open"]));
-            } else {
-                break;
-            }
+            } else break;
         }
         stocks.label = stocks.labels.reverse();
         stocks.series= stocks.series.reverse();
+        stocks.name= response.data["Meta Data"]["2. Symbol"];
         resp.data = stocks;
         cb(resp)
     }).catch((err) =>{

@@ -11,6 +11,7 @@ import io.jsonwebtoken.Claims;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,16 +36,12 @@ public class StocksController {
        try {
            ResponseEntity<String> response = apiManager.getStocks(stock);
            JSONObject responseObject =  (JSONObject) parser.parse(response.getBody());
-           if(responseObject.containsKey("Error Message")){
-               return new ResponseEntity<> ("Stock does not exist", HttpStatus.NOT_FOUND);
-           }
-           else{
-               return new ResponseEntity<> (response.getBody(), HttpStatus.ACCEPTED);
-           }
+           if(responseObject.containsKey("Error Message")) return new ResponseEntity<> ("Stock does not exist", HttpStatus.NOT_FOUND);
+           else return new ResponseEntity<> (response.getBody(), HttpStatus.ACCEPTED);
        }
        catch(Exception e){
            System.out.println(e);
-            return new ResponseEntity<> ("Internal error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+           return new ResponseEntity<> (e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -55,16 +52,22 @@ public class StocksController {
             try {
                 Claims claims = TokenManager.parseJWT(sf);
                 Integer userId = Integer.parseInt(claims.getSubject());
-                Stocks stocks = new Stocks(userId, stock);
-                stocksRepository.save(stocks);
-                Entity.put("completed", true);
-                return new ResponseEntity<Object>(Entity, HttpStatus.OK);
+                if(stocksRepository.findByStockNameAndUserId(stock, userId).isEmpty()) {
+                    Stocks stocks = new Stocks(userId, stock);
+                    stocksRepository.save(stocks);
+                    Entity.put("completed", true);
+                    return new ResponseEntity<Object>(Entity, HttpStatus.OK);
+                } else {
+                    Entity.put("completed", false);
+                    Entity.put("message", "Stock has already been saved.");
+                    return new ResponseEntity<Object>(Entity, HttpStatus.BAD_REQUEST);
+                }
             }
             catch(Exception e){
                 System.out.println(e);
                 Entity.put("completed", false);
                 Entity.put("message", "Internal server error.");
-                return new ResponseEntity<Object>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
         }

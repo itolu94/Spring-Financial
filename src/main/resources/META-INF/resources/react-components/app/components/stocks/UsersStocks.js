@@ -8,16 +8,16 @@ export default class SavedStocks extends Component {
     }
 
     shouldComponentUpdate(nextProps){
-        return this.props.savedStocks !==  nextProps.savedStocks;
+        return this.props.usersStocks !==  nextProps.usersStocks;
     }
 
     generateButtons(){
-        let savedStocks = this.props.savedStocks;
-        if(savedStocks.length > 0) {
-            return savedStocks.map((stock) => {
+        let usersStocks = this.props.usersStocks;
+        if(usersStocks.length > 0) {
+            return usersStocks.map((stock) => {
                 return (
                     <div className='sSInnerDiv'>
-                        <button className='sSBtn'>{stock}</button>
+                        <input type="button" onClick={(e) => this.props.searchForStock(e, this)} value={stock} className='sSBtn' />
                     </div>
                 )
             })

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
 
-const StocksForm = ({handleChange, searchStock, stock}) => {
+const StocksForm = ({handleChange, searchForStock, stock}) => {
     return (
         <div className='stocksContent'>
-            <form className='stocksForm' onSubmit={searchStock}>
+            <form className='stocksForm' onSubmit={searchForStock}>
                 <input
                     value={stock}
                     onChange={handleChange}

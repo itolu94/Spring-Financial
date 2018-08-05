@@ -14,7 +14,7 @@ export default class StockGraph extends Component  {
 
     displayGraph(){
         if(this.props.stockData.labels && this.props.stockData.series){
-            let {labels, series} = this.props.stockData;
+            let {labels, series, name} = this.props.stockData;
             let data = {
                 labels,
                 series: [
@@ -28,8 +28,8 @@ export default class StockGraph extends Component  {
                 <div>
                     <ChartistGraph data={data} type={'Line'} options={options}/>
                     <div className='stocksContent'>
-                        <form className='stocksForm' onSubmit={(e) => this.props.saveStock(e)}>
-                            <input type="submit" >Save Stock</input>
+                        <form className='stocksForm' onSubmit={(e) => this.props.saveStock(e, name)}>
+                            <input type="submit" value="Save Stock"/>
                         </form>
                     </div>
                 </div>
