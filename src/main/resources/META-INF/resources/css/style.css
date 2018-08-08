@@ -37,11 +37,30 @@ body{
     padding-bottom: 20px;
 }
 
-#transactionsContent input, .stocksContent input{
+ .stocksContent input{
     width: 50% !important;
     clear: right;
     display: block;
     margin: 0 25% !important;
+}
+
+#transactionsContent input {
+    width: 50%;
+    clear: right;
+    display: block;
+    margin: 0 25%;
+}
+
+#transactionsContent input[type=submit] {
+    border-radius: 13px;
+}
+
+#transactionsContent input:nth-of-type(1){
+    margin-top: 2% !important;
+}
+
+#transactionsContent input:nth-of-type(2){
+    margin: 2% 25% !important;
 }
 
 #saveStockButton {
@@ -53,8 +72,10 @@ body{
 
 
 .category{
-    width:52%;
+    width:50%;
     display: inline;
+    background-color: palegoldenrod;
+    opacity: 0.8;
 }
 
 #content {
