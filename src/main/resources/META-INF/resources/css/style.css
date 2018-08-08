@@ -44,6 +44,14 @@ body{
     margin: 0 25% !important;
 }
 
+#saveStockButton {
+    width: 50% !important;
+    clear: right;
+    display: block;
+    margin: 0 25% 1% 25% !important;
+}
+
+
 .category{
     width:52%;
     display: inline;

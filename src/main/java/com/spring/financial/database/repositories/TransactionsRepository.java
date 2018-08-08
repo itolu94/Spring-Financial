@@ -1,7 +1,7 @@
-package com.spring.financial.database.repository;
+package com.spring.financial.database.repositories;
 
 
-import com.spring.financial.database.entity.Transactions;
+import com.spring.financial.database.entities.Transactions;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

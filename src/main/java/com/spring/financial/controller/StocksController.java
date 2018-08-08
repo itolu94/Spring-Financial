@@ -4,20 +4,15 @@ package com.spring.financial.controller;
 import com.spring.financial.api.ApiManager;
 
 import com.spring.financial.auth.TokenManager;
-import com.spring.financial.database.entity.Stocks;
-import com.spring.financial.database.entity.Transactions;
-import com.spring.financial.database.repository.StocksRepository;
+import com.spring.financial.database.entities.Stocks;
+import com.spring.financial.database.repositories.StocksRepository;
 import io.jsonwebtoken.Claims;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RestController

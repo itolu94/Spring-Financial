@@ -29,7 +29,7 @@ export default class StockGraph extends Component  {
                     <ChartistGraph data={data} type={'Line'} options={options}/>
                     <div className='stocksContent'>
                         <form className='stocksForm' onSubmit={(e) => this.props.saveStock(e, name)}>
-                            <input type="submit" value="Save Stock"/>
+                            <input type="submit" id="saveStockButton" value="Save Stock"/>
                         </form>
                     </div>
                 </div>

@@ -62,33 +62,26 @@ exports.login = (userInformation, cb) => {
 exports.getStocks = (stock, cb) => {
     axios.get(`/api/get-stocks?stock=${stock}`
     ).then((response) => {
-        //TODO refine function
         let data = response.data["Time Series (60min)"];
         let stocks = {};
-        let resp = {};
-        let tmp = {};
+        let int = 3;
         stocks.labels = [];
         stocks.series = [];
-        tmp.data = [];
-        resp.completed=true;
-        let int = 0;
+        stocks.completed=true;
+        stocks.name= response.data["Meta Data"]["2. Symbol"];
         for (let key in data) {
-            if(int++ <= 8){
-                stocks.labels.push(key.slice(5, 10) + '\n' + key.slice(10 ,-3)) ;
-                stocks.series.push(parseInt(data[key]["1. open"]));
+            if(int-- >= 0){
+                stocks.labels[int + 1] = (key.slice(5, 10) + ' ' + key.slice(10 ,-3)) ;
+                stocks.series[int + 1] = (parseInt(data[key]["1. open"]));
             } else break;
         }
-        stocks.label = stocks.labels.reverse();
-        stocks.series= stocks.series.reverse();
-        stocks.name= response.data["Meta Data"]["2. Symbol"];
-        resp.data = stocks;
-        cb(resp)
+        cb(stocks)
     }).catch((err) =>{
         console.log(err);
-        let res =  {completed: false}
+        let res =  {completed: false};
         cb(res);
     })
-}
+};
 
 
 exports.saveStock = (stock, cb) => {
@@ -101,4 +94,4 @@ exports.saveStock = (stock, cb) => {
       let response = {completed: false};
         cb(response);
     });
-}
+};

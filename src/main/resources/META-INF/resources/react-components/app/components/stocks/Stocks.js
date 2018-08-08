@@ -23,7 +23,7 @@ export default class Stocks extends Component {
         let stock =  this.state.stock || contex;
         Helpers.getStocks(stock, (resp) => {
             if(resp.completed){
-                this.setState({stockData: resp.data});
+                this.setState({stockData: resp});
             } else {
                 //TODO create proper error handling!
                 this.setState({stockData: {}});

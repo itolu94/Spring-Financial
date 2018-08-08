@@ -2,9 +2,9 @@ package com.spring.financial.controller;
 
 import com.spring.financial.auth.HashManager;
 import com.spring.financial.auth.TokenManager;
-import com.spring.financial.database.entity.Person;
+import com.spring.financial.database.entities.Person;
 import com.spring.financial.controller.RequestBody.PersonInfo;
-import com.spring.financial.database.repository.PersonRepository;
+import com.spring.financial.database.repositories.PersonRepository;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
