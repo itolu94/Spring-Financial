@@ -78,7 +78,7 @@ export default class Items extends Component{
     return (
         <div className='transactions card '>
             <div className="deleteIcon">
-                <i onClick={()=> this.props.deleteTransaction(this.props.index)} className="material-icons">close</i>
+                <button><i onClick={()=> this.props.deleteTransaction(this.props.index)} className="material-icons">close</i></button>
             </div>
             <div className="catagoryIcon">
                 <i alt={this.props.transaction.category} className="material-icons">{this.itemIcon()}</i>

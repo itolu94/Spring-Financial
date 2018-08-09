@@ -100,29 +100,7 @@ export default class Transactions extends Component {
     handleChange(e) {
         this.setState({[e.target.name]: e.target.value});
     }
-    componentWillMount() {
-        let sfCookie = cookie.load("sf");
-        if (sfCookie) {
-            this.props.handleLoggedIn(true);
-            Helpers.getTransaction((resp) =>{
-                if(resp){
-                    let balance = this.state.balance;
-                    resp.map((transaction, index) => {
-                        if(transaction.category === "deposit") balance += transaction.amount;
-                        else balance -= transaction.amount;
-                        if ((index + 1) === resp.length) {
-                            this.setState({
-                                transactions: resp,
-                                balance
-                            });
-                        }
-                    });
-                }
-            });
-        } else {
-            this.props.history.push('/login');
-        }
-    }
+
     render(){
         return (
             <div>

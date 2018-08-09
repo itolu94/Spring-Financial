@@ -12,8 +12,8 @@ import Registration from './user-authentification/Registration';
 import Transactions from "./transactions/Transactions";
 import Stocks from './stocks/Stocks';
 import Login from './user-authentification/Login';
+import Helpers from './../util/helpers';
 import cookie from 'react-cookies'
-
 
  class Layout extends Component {
     constructor() {
@@ -64,7 +64,29 @@ import cookie from 'react-cookies'
             )
         }
     }
-
+     componentWillMount() {
+         let sfCookie = cookie.load("sf");
+         if (sfCookie) {
+             this.handleLoggedIn(true);
+             Helpers.getTransaction((resp) =>{
+                 if(resp){
+                     let balance = this.state.balance;
+                     resp.map((transaction, index) => {
+                         if(transaction.category === "deposit") balance += transaction.amount;
+                         else balance -= transaction.amount;
+                         if ((index + 1) === resp.length) {
+                             this.setState({
+                                 transactions: resp,
+                                 balance
+                             });
+                         }
+                     });
+                 }
+             });
+         } else {
+             this.props.history.push('/login');
+         }
+     }
     render() {
         return (
                 <div>

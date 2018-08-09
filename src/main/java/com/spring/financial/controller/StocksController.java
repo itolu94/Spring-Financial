@@ -10,6 +10,7 @@ import io.jsonwebtoken.Claims;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,11 +43,13 @@ public class StocksController {
 
     @PostMapping(value = "/api/save-stock")
     public ResponseEntity<Object> getStocks(@RequestBody String stock, @CookieValue(value = "sf", defaultValue = "") String sf){
+        stock = stock.replace('=', ' ').trim();
         JSONObject Entity = new JSONObject();
         if(!sf.isEmpty()){
             try {
                 Claims claims = TokenManager.parseJWT(sf);
                 Integer userId = Integer.parseInt(claims.getSubject());
+                //check if user has already saved the stock
                 if(stocksRepository.findByStockNameAndUserId(stock, userId).isEmpty()) {
                     Stocks stocks = new Stocks(userId, stock);
                     stocksRepository.save(stocks);

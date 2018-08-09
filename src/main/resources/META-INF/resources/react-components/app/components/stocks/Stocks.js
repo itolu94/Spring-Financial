@@ -34,7 +34,6 @@ export default class Stocks extends Component {
 
     saveStock(e, stockName){
         e.preventDefault();
-        //TODO create else function to handle error
         if(stockName !== ""){
             Helpers.saveStock(stockName, (resp) =>{
                 if(resp.completed) {

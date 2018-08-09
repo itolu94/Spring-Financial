@@ -26,6 +26,7 @@ export default class StockGraph extends Component  {
             }
             return (
                 <div>
+                    <h3>{this.props.stockData.name}</h3>
                     <ChartistGraph data={data} type={'Line'} options={options}/>
                     <div className='stocksContent'>
                         <form className='stocksForm' onSubmit={(e) => this.props.saveStock(e, name)}>

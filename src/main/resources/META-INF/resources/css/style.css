@@ -99,6 +99,12 @@ body{
 .deleteIcon{
     float: left;
 }
+
+.deleteIcon button{
+    background: transparent;
+    border-color: transparent;
+}
+
 .catagoryIcon{
     float: right;
     margin-right: 2%;
