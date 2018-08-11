@@ -8,16 +8,26 @@ export default class Transactions extends Component {
         super();
         this.state= {
             transactions: [],
+            balance:  0,
             category: '',
             amount: '',
             note: '',
-            balance: 120,
         };
         this.listTransactions = this.listTransactions.bind(this);
         this.newTransaction = this.newTransaction.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.deleteTransaction = this.deleteTransaction.bind(this);
         this.updateNote = this.updateNote.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps){
+            if(nextProps.transactions !== this.state.transactions) {
+                let {balance, transactions} = nextProps;
+                this.setState({
+                    balance,
+                    transactions
+                })
+            }
     }
 
     deleteTransaction(index){

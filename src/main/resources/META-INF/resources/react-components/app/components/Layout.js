@@ -20,6 +20,9 @@ import cookie from 'react-cookies'
         super();
         this.state = {
             loggedIn: false,
+            transactions: [],
+            balance: 0,
+            usersStocks: []
         }
         this.handleNavBar =  this.handleNavBar.bind(this);
         this.handleLoggedIn = this.handleLoggedIn.bind(this);
@@ -68,18 +71,24 @@ import cookie from 'react-cookies'
          let sfCookie = cookie.load("sf");
          if (sfCookie) {
              this.handleLoggedIn(true);
-             Helpers.getTransaction((resp) =>{
-                 if(resp){
+             Helpers.getUserInformation((resp) =>{
+                 let {transactions, usersStocks} = resp;
+                 if(transactions.length > 0){
                      let balance = this.state.balance;
-                     resp.map((transaction, index) => {
+                     transactions.map((transaction, index) => {
                          if(transaction.category === "deposit") balance += transaction.amount;
                          else balance -= transaction.amount;
-                         if ((index + 1) === resp.length) {
+                         if ((index + 1) === transactions.length) {
                              this.setState({
-                                 transactions: resp,
+                                 transactions,
+                                 usersStocks,
                                  balance
                              });
                          }
+                     });
+                 } else {
+                     this.setState({
+                         usersStocks,
                      });
                  }
              });
@@ -100,10 +109,32 @@ import cookie from 'react-cookies'
                         <div className="row center-align">
                             <div className="col s8 offset-s2" id='content'>
                                 <div id='transactionsList'>
-                                        <Route path='/login' component={Login} />
                                         <Route path='/create-account' component={Registration} />
-                                        <Route path='/stock-market' component={Stocks} />
-                                        <Route exact path='/' render={(props) => <Transactions {...props} handleLoggedIn={this.handleLoggedIn} />} />
+                                        <Route path='/login'
+                                               render={(props) =>
+                                                   <Login
+                                                       {...props}
+                                                       handleLoggedIn={this.handleLoggedIn}
+                                                   />
+                                               }
+                                        />
+                                        <Route path='/stock-market'
+                                               render={(props) =>
+                                                   <Stocks
+                                                       {...props}
+                                                       usersStocks={this.state.usersStocks}
+                                                   />
+                                               }
+                                        />
+                                        <Route exact path='/'
+                                               render={(props) =>
+                                                   <Transactions
+                                                       {...props}
+                                                       balance={this.state.balance}
+                                                       transactions={this.state.transactions}
+                                                   />
+                                               }
+                                        />
                                 </div>
                             </div>
                         </div>

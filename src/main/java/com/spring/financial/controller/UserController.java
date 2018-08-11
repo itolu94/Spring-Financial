@@ -4,20 +4,32 @@ import com.spring.financial.auth.HashManager;
 import com.spring.financial.auth.TokenManager;
 import com.spring.financial.database.entities.Person;
 import com.spring.financial.controller.RequestBody.PersonInfo;
+import com.spring.financial.database.entities.Stocks;
+import com.spring.financial.database.entities.Transactions;
 import com.spring.financial.database.repositories.PersonRepository;
+import com.spring.financial.database.repositories.StocksRepository;
+import com.spring.financial.database.repositories.TransactionsRepository;
+import io.jsonwebtoken.Claims;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-//TODO create controller to send all non api request to webpages;
 @RestController
-public class PersonController {
-
+public class UserController {
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    TransactionsRepository transactionsRepository;
+
+    @Autowired
+    StocksRepository stocksRepository;
 
     @PostMapping(value = "/api/add-person")
     public ResponseEntity<Object> addPerson(@RequestBody Person person) {
@@ -63,4 +75,33 @@ public class PersonController {
         }
     }
 
+
+    @GetMapping("/api/get-user-information")
+    public ResponseEntity<Object> getUserInformation(@CookieValue(value = "sf", defaultValue = "") String sf) {
+        JSONObject Entity = new JSONObject();
+        List<Transactions> transactionsList = new ArrayList<>();
+        List<Stocks> stocksList = new ArrayList<>();
+        if (!sf.isEmpty()) {
+            try {
+                Claims claims = TokenManager.parseJWT(sf);
+                Integer userId = Integer.parseInt(claims.getSubject());
+                stocksList = stocksRepository.findByUserId(userId);
+                transactionsList =	transactionsRepository.findByUserId(userId);
+                Entity.put("transactions", transactionsList);
+                Entity.put("usersStocks", stocksList);
+                Entity.put("completed", true);
+                return new ResponseEntity<>(Entity, HttpStatus.OK);
+            }
+            catch (Exception e) {
+                Entity.put("completed", false);
+                Entity.put("message", e.getMessage());
+                return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else {
+            Entity.put("completed", false);
+            Entity.put("message", "Invalid credentials");
+            return new ResponseEntity<>(Entity, HttpStatus.FORBIDDEN);
+        }
+    }
 }

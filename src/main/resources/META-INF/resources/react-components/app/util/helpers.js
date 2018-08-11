@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-//TODO update all api calls to handle bad request (check status code)
+
 exports.getTransaction = (cb) => {
     axios.get('/api/get-transactions').then((response) => {
         cb(response.data);
@@ -47,7 +47,6 @@ exports.createAccount = (userInformation, cb) => {
     });
 };
 
-
 exports.login = (userInformation, cb) => {
     axios.post('api/login', userInformation
     ).then((response) => {
@@ -83,13 +82,22 @@ exports.getStocks = (stock, cb) => {
     })
 };
 
+exports.getUserInformation = (cb) =>  {
+    axios.get('/api/get-user-information').then((response) => {
+        cb(response.data);
+    }).catch((err) => {
+        console.log(err);
+        let res  = {completed: false };
+        cb(res);
+    });
+};
+
 
 exports.saveStock = (stock, cb) => {
     axios.post('api/save-stock', stock
     ).then((response) => {
         cb(response.data);
     }).catch((err) => {
-      // console.log(err);
       let response = {completed: false};
         cb(response);
     });

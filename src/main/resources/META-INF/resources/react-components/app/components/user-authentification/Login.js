@@ -27,6 +27,7 @@ export default class Login extends Component {
         Helpers.login(data, (resp) => {
             if(resp.completed){
                 cookie.save("sf", resp.token, {path: '/'});
+                this.props.handleLoggedIn(true);
                 this.props.history.push('/');
             } else {
                 this.setState({message: resp.message});

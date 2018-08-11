@@ -8,7 +8,6 @@ export default class Stocks extends Component {
     constructor(){
         super();
         this.state= {
-            transactions: '',
             stock: '',
             stockData: {},
             usersStocks: []
@@ -16,6 +15,16 @@ export default class Stocks extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.searchForStock = this.searchForStock.bind(this);
         this.saveStock = this.saveStock.bind(this);
+    }
+
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.usersStocks !== this.state.usersStocks) {
+            let {usersStocks} = nextProps;
+            this.setState({
+                usersStocks
+            })
+        }
     }
 
     searchForStock(e, contex){
