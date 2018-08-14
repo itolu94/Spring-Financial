@@ -77,16 +77,21 @@ export default class Items extends Component{
  render(){
     return (
         <div className='transactions card '>
-            <div className="deleteIcon">
-                <button><i onClick={()=> this.props.deleteTransaction(this.props.index)} className="material-icons">close</i></button>
-            </div>
-            <div className="catagoryIcon">
-                <i alt={this.props.transaction.category} className="material-icons">{this.itemIcon()}</i>
+            <div className="cardBackground">
             </div>
             <div className="card-content transactionCard">
-                <p className='transactionAmount'>${this.props.transaction.amount}</p>
-                {this.transactionNote()}
+                <div className="deleteIcon">
+                    <button><i onClick={()=> this.props.deleteTransaction(this.props.index)} className="material-icons">close</i></button>
+                </div>
+                <div className="catagoryIcon">
+                    <i alt={this.props.transaction.category} className="material-icons">{this.itemIcon()}</i>
+                </div>
+                <div className='transactionDetails'>
+                    <p className='transactionAmount'>${this.props.transaction.amount}</p>
+                    {this.transactionNote()}
+                </div>
             </div>
+
         </div>
     )
  }

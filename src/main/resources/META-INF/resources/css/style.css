@@ -22,6 +22,7 @@ body{
     margin: 1%;
     float: left;
     height: 200px;
+    position: relative;
 }
 
 #pageHeader{
@@ -86,102 +87,117 @@ body{
     margin: 0;
 }
 .editNoteSubmitInp{
-    margin: 0;
+    margin: 0 !important;
+    text-align: center;
 }
 #nav-mobile, nav{
     background-color: #252525;
  }
 
-.transactionCard {
-    margin-top: 20px;
+.transactionCard{
+    padding: 1px !important;
+    position: absolute;
+    width: 100%;
+}
+.transactionDetails {
+ margin-top: 45px;
 }
 
 .deleteIcon{
-    float: left;
+float: left;
 }
 
 .deleteIcon button{
-    background: transparent;
-    border-color: transparent;
+background: transparent;
+border-color: transparent;
 }
 
 .catagoryIcon{
-    float: right;
-    margin-right: 2%;
+float: right;
+margin-right: 2%;
 }
 
 .transactionAmount{
-    font-size: 200%;
+font-size: 200%;
 }
 
 #newTransactionForm, .stocksForm{
-    width: 100%;
+width: 100%;
 }
 
 .verification{
-    margin: 3% 25%;
+margin: 3% 25%;
 }
 
 .verificationHeader {
-    font-size: 30px;
-    text-decoration: underline;
+font-size: 30px;
+text-decoration: underline;
 }
 
 .verificationBtn{
-    border-radius: 25px;
+border-radius: 25px;
 }
 
 .sSOuterDiv{
-    margin: 1% 0 ;
+margin: 1% 0 ;
 }
 
 .sSInnerDiv{
-    display: inline;
-    margin: 0 1%;
+display: inline;
+margin: 0 1%;
 }
 
 @media only screen and (max-width: 850px) {
-    nav .brand-logo {
-        font-size: 1.4rem;
-    }
+nav .brand-logo {
+    font-size: 1.4rem;
+}
 
-    #transactionsContent input, #stocksContent input{
-        width: 100%;
-        display: block;
-        margin: 0;
-    }
+#transactionsContent input, #stocksContent input{
+    width: 100%;
+    display: block;
+    margin: 0;
+}
 
-    #newTransactionForm{
-        width: 90%;
-        margin: 0 5%;
-    }
+#newTransactionForm{
+    width: 90%;
+    margin: 0 5%;
+}
 
-    .category{
-        width: 100%;
-        display: inline;
-    }
+.category{
+    width: 100%;
+    display: inline;
+}
 
-    .transactions {
-        border: solid black 2px;
-        width: 80%;
-        margin: 2% 10%;
-        height: 200px;
-    }
+.transactions {
+    border: solid black 2px;
+    width: 80%;
+    margin: 2% 10%;
+    height: 200px;
+}
 
 }
 
 @media only screen and (max-width: 700px) {
-    .transactions {
-        border: solid black 2px;
-        width: 100%;
-        height: 230px;
-    }
-
-    #transactionsContent input, #stocksContent input{
-        width: 100%;
-        clear: right;
-        display: block;
-    }
+.transactions {
+    border: solid black 2px;
+    height: 230px;
 }
 
+#transactionsContent input, #stocksContent input{
+    width: 100%;
+    clear: right;
+    display: block;
+}
+}
+
+
+.cardBackground {
+    background-image: url(https://images6.moneysavingexpert.com/images/shopping-supermarket.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
 
