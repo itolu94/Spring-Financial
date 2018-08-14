@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Helpers from '../../util/helpers';
+import  stocksHelper from '../../util/stocksHelper';
 import StocksForm from './StocksForm';
 import StockGraph from './StockGraph';
 import UsersStocks from './UsersStocks';
@@ -30,7 +30,7 @@ export default class Stocks extends Component {
     searchForStock(e, contex){
         e.preventDefault();
         let stock =  this.state.stock || contex;
-        Helpers.getStocks(stock, (resp) => {
+        stocksHelper.getStocks(stock, (resp) => {
             if(resp.completed){
                 this.setState({stockData: resp});
             } else {
@@ -44,7 +44,7 @@ export default class Stocks extends Component {
     saveStock(e, stockName){
         e.preventDefault();
         if(stockName !== ""){
-            Helpers.saveStock(stockName, (resp) =>{
+            stocksHelper.saveStock(stockName, (resp) =>{
                 if(resp.completed) {
                     let usersStocks = this.state.usersStocks.slice();
                     usersStocks.push(stockName);

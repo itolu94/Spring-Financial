@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Item from './Items';
-import Helpers from '../../util/helpers';
+import transactionHelper from '../../util/transactionHelper';
 import cookie from 'react-cookies'
 
 export default class Transactions extends Component {
@@ -33,7 +33,7 @@ export default class Transactions extends Component {
     deleteTransaction(index){
         let transactions = this.state.transactions;
         let transaction = transactions[index];
-        Helpers.deleteTransaction(transaction.id, (resp) => {
+        transactionHelper.deleteTransaction(transaction.id, (resp) => {
             if(resp.completed){
                 let balance;
                 if(transaction.category === "deposit") balance = this.state.balance - transaction.amount;
@@ -86,7 +86,7 @@ export default class Transactions extends Component {
                 amount: this.state.amount,
                 note: this.state.note
             };
-            Helpers.postTransaction(transaction, (resp) => {
+        transactionHelper.postTransaction(transaction, (resp) => {
                 if(resp.completed){
                     let balance;
                     if(this.state.category === "deposit") balance = parseInt(this.state.balance) + parseInt(this.state.amount);

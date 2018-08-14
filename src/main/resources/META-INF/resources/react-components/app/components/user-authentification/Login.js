@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
 import React, {Component} from 'react';
-import Helpers from '../../util/helpers';
+import userHelper from '../../util/userHelper';
 import cookie from 'react-cookies'
 
 export default class Login extends Component {
@@ -24,7 +24,7 @@ export default class Login extends Component {
         e.preventDefault();
         let {email, password} = this.state;
         let data =  {email, password};
-        Helpers.login(data, (resp) => {
+        userHelper.login(data, (resp) => {
             if(resp.completed){
                 cookie.save("sf", resp.token, {path: '/'});
                 this.props.handleLoggedIn(true);

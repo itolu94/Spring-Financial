@@ -12,7 +12,7 @@ import Registration from './user-authentification/Registration';
 import Transactions from "./transactions/Transactions";
 import Stocks from './stocks/Stocks';
 import Login from './user-authentification/Login';
-import Helpers from './../util/helpers';
+import userHelper from './../util/userHelper';
 import cookie from 'react-cookies'
 
  class Layout extends Component {
@@ -71,7 +71,7 @@ import cookie from 'react-cookies'
          let sfCookie = cookie.load("sf");
          if (sfCookie) {
              this.handleLoggedIn(true);
-             Helpers.getUserInformation((resp) =>{
+             userHelper.getUserInformation((resp) =>{
                  let {transactions, usersStocks} = resp;
                  if(transactions.length > 0){
                      let balance = this.state.balance;

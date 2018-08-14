@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 import React, {Component} from 'react';
-import Helpers from '../../util/helpers'
+import userHelper from '../../util/userHelper';
 
 class Registration extends Component {
     constructor() {
@@ -24,7 +24,7 @@ class Registration extends Component {
         }
         let {name, email, password} = this.state;
         let data = {name, email, password};
-        Helpers.createAccount(data, (resp)=> {
+        userHelper.createAccount(data, (resp)=> {
             if(resp.completed){
                 this.props.history.push('/login')
             }

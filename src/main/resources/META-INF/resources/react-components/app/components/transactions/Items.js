@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Helpers from '../../util/helpers';
+import transactionHelper from '../../util/transactionHelper';
 
 export default class Items extends Component{
      constructor(){
@@ -44,7 +44,7 @@ export default class Items extends Component{
         e.preventDefault();
         let transaction = this.props.transaction;
         transaction.note = this.state.note;
-        Helpers.updateTransaction(transaction, (resp) =>{
+        transactionHelper.updateTransaction(transaction, (resp) =>{
             if(resp.completed){
                 this.setState({editing: false});
                 this.props.updateNote(transaction, index);
