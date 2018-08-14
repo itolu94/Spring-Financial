@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import transactionHelper from '../../util/transactionHelper';
 
+
+
 export default class Items extends Component{
      constructor(){
          super();
@@ -75,9 +77,12 @@ export default class Items extends Component{
         this.setState({note: this.props.transaction.note})
     }
  render(){
+        let style = {
+            "backgroundImage": "url('../../../../img/cards/" + this.props.transaction.category +  ".jpg')"
+        }
     return (
         <div className='transactions card '>
-            <div className="cardBackground">
+            <div className="cardBackground"  style={style}>
             </div>
             <div className="card-content transactionCard">
                 <div className="deleteIcon">
