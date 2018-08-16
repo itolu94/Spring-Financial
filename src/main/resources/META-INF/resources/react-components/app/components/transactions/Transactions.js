@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Item from './Items';
+import  TransactionForm from './TransactionForm';
 import transactionHelper from '../../util/transactionHelper';
 import cookie from 'react-cookies'
 
@@ -81,11 +82,8 @@ export default class Transactions extends Component {
     }
     newTransaction(e){
         e.preventDefault();
-            let transaction = {
-                category: this.state.category,
-                amount: this.state.amount,
-                note: this.state.note
-            };
+        let {category, amount, note} =  this.state;
+        let transaction = { category, amount, note };
         transactionHelper.postTransaction(transaction, (resp) => {
                 if(resp.completed){
                     let balance;
@@ -93,9 +91,9 @@ export default class Transactions extends Component {
                     else balance = this.state.balance - this.state.amount;
                     transaction.id = resp.transactionId;
                     this.setState({
-                        category: '',
-                        amount: '',
-                        note: '',
+                        category,
+                        amount,
+                        note,
                         balance,
                         transactions: [...this.state.transactions, transaction]
                     });
@@ -103,7 +101,7 @@ export default class Transactions extends Component {
                 else {
                     let sfCookie = cookie.load("sf");
                     if(!sfCookie) this.props.history.push("/login");
-                    else console.log("transaction was not able to be deleted");
+                    else console.log("transaction was not able to be added");
                 }
             });
     }
@@ -119,21 +117,15 @@ export default class Transactions extends Component {
                     <p id="balance">{this.state.balance}</p>
                 </div>
                 <div id='transactionsContent'>
-                    <form id='newTransactionForm' onSubmit={(e)=> this.newTransaction(e)}>
-                        <select className="category" value={this.state.category} onChange={this.handleChange} name="category" required>
-                            <option value="">Select the best option</option>
-                            <option value="shopping">Shopping </option>
-                            <option value="car"> Car</option>
-                            <option value="food">Food</option>
-                            <option value="house">House</option>
-                            <option value="medical">Medical</option>
-                            <option value="deposit">Deposit</option>
-                        </select>
-                        <input value={this.state.amount} onChange={this.handleChange} name="amount" type="number" required placeholder='Amount'/>
-                        <input value={this.state.note} onChange={this.handleChange} name='note' type="text" maxLength="25" placeholder='Note'/>
-                        <input type="submit"/>
-                    </form>
+                    <TransactionForm
+                        handleChange={this.handleChange}
+                        newTransaction={this.newTransaction}
+                        amount={this.state.amount}
+                        category={this.state.category}
+                        note={this.state.note}
+                    />
                 </div>
+
                 {this.listTransactions()}
             </div>
         )

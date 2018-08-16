@@ -15,7 +15,7 @@ public class Transactions {
 	private int amount;
 	private String category;
 	private String note;
-	private Date created;
+	private Date date;
 
 	public int getId() {
 		return id;
@@ -36,12 +36,12 @@ public class Transactions {
 		this.userId = userId;
 	}
 
-	public Date getCreated() {
-		return created;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setCreated(Date created) {
-		this.created= created;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public int getAmount() {

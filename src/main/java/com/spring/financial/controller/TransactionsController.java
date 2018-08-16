@@ -41,7 +41,7 @@ public class TransactionsController {
 				Claims claims = TokenManager.parseJWT(sf);
 				Integer userId = Integer.parseInt(claims.getSubject());
 				Date date = new Date();
-				transaction.setCreated(date);
+				transaction.setDate(date);
 				transaction.setUserId(userId);
 				transactionsRepository.save(transaction);
 				Entity.put("completed", true);
