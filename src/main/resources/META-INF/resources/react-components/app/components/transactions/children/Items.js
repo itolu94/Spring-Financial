@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import transactionHelper from '../../util/transactionHelper';
+import transactionHelper from '../../../util/transactionHelper';
 
 
 

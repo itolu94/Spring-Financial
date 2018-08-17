@@ -1,20 +1,24 @@
 import React, {Component} from 'react';
-import Item from './Items';
-import  TransactionForm from './TransactionForm';
+import Item from './children/Items';
+import  TransactionForm from './children/TransactionForm';
+import TransactionFilter from './children/Filter';
+import TransactionModal from "./children/Modal";
+import TransactionList from './children/TransactionList';
 import transactionHelper from '../../util/transactionHelper';
 import cookie from 'react-cookies'
+
 
 export default class Transactions extends Component {
     constructor(){
         super();
         this.state= {
-            transactions: [],
             balance:  0,
+            transactions: [],
+            filterCategory: '',
             category: '',
             amount: '',
             note: '',
         };
-        this.listTransactions = this.listTransactions.bind(this);
         this.newTransaction = this.newTransaction.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.deleteTransaction = this.deleteTransaction.bind(this);
@@ -36,8 +40,8 @@ export default class Transactions extends Component {
         let transaction = transactions[index];
         transactionHelper.deleteTransaction(transaction.id, (resp) => {
             if(resp.completed){
-                let balance;
-                if(transaction.category === "deposit") balance = this.state.balance - transaction.amount;
+                let balance = this.state.balance;
+                if(transaction.category === "deposit") balance = balance - transaction.amount;
                 else balance = parseInt(this.state.balance) + parseInt(transaction.amount);
                 transactions.splice(index, 1);
                 this.setState({
@@ -56,29 +60,6 @@ export default class Transactions extends Component {
         let transactions = this.state.transactions;
         transactions[index] = transaction;
         this.setState({transactions});
-    }
-
-    listTransactions() {
-        if(this.state.transactions.length >= 1) {
-            return this.state.transactions.map((transaction, index) => {
-                    return (
-                        <div>
-                            <Item
-                                transaction={transaction}
-                                index={index}
-                                key={index}
-                                deleteTransaction={this.deleteTransaction}
-                                updateNote={this.updateNote}
-                            />
-                        </div>
-                    )
-            });
-        }
-        return (
-            <div>
-                <p>No Transactions added</p>
-            </div>
-        )
     }
     newTransaction(e){
         e.preventDefault();
@@ -125,8 +106,14 @@ export default class Transactions extends Component {
                         note={this.state.note}
                     />
                 </div>
-
-                {this.listTransactions()}
+                <TransactionFilter
+                    handleChange={this.handleChange}
+                    filterCategory={this.state.filterCategory}
+                />
+                <TransactionList
+                    transactions={this.state.transactions}
+                    filterCategory={this.state.filterCategory}
+                />
             </div>
         )
     }

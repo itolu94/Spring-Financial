@@ -10,7 +10,6 @@ body{
 #transactionsList{
     background-color: dimgrey;
     color: black;
-    /*height: 700px;*/
     overflow-y: auto;
     border-radius: 25px;
     border: solid white 2px
@@ -72,12 +71,26 @@ body{
 }
 
 
-.category{
+.category , .filterCategory {
     width:50%;
     display: inline;
     background-color: palegoldenrod;
     opacity: 0.8;
 }
+
+
+.filterDiv{
+    width: 100%;
+    position: relative;
+    margin-top: 1%;
+}
+
+
+.filterCategory {
+    position: relative;
+    right: 25%;
+}
+
 
 #content {
     margin-top: 30px;

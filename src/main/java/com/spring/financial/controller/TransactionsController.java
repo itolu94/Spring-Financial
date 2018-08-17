@@ -20,22 +20,40 @@ public class TransactionsController {
 	TransactionsRepository transactionsRepository;
 
 	@GetMapping(value = "/api/get-transactions")
-	public List<Transactions> getTransactions(@CookieValue(value = "sf", defaultValue = "") String sf){
+	public ResponseEntity<Object> getTransactions(
+			@RequestParam (value = "category", required = false, defaultValue = "") String category,
+			@CookieValue(value = "sf", defaultValue = "") String sf)
+	{
+		JSONObject Entity = new JSONObject();
 		List<Transactions> transactionsList = new ArrayList<>();
-		try {
-			Claims claims = TokenManager.parseJWT(sf);
-			Integer userId = Integer.parseInt(claims.getSubject());
-			transactionsList =	transactionsRepository.findByUserId(userId);
+		if (!sf.isEmpty()) {
+			try {
+				Claims claims = TokenManager.parseJWT(sf);
+				Integer userId = Integer.parseInt(claims.getSubject());
+				if (!category.isEmpty())
+					transactionsList = transactionsRepository.findByUserIdAndCategory(userId, category);
+				else
+					transactionsList = transactionsRepository.findByUserId(userId);
+				Entity.put("transactions", transactionsList);
+				Entity.put("completed", true);
+				return new ResponseEntity<>(Entity, HttpStatus.OK);
+			} catch (Exception e) {
+				Entity.put("message", e.getMessage());
+				Entity.put("completed", false);
+				return new ResponseEntity<>(Entity, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
-		catch (Exception e){
-			return transactionsList;
-		}
-		return transactionsList;
+		Entity.put("completed", false);
+		Entity.put("message", "Please login");
+		return new ResponseEntity<>(Entity, HttpStatus.UNAUTHORIZED);
 	}
+
+
 
 	@PostMapping(value = "/api/add-transaction")
 	public ResponseEntity<Object> saveTransaction(@RequestBody Transactions transaction, @CookieValue(value = "sf", defaultValue = "") String sf) {
 		JSONObject Entity = new JSONObject();
+
 		if (!sf.isEmpty()) {
 			try {
 				Claims claims = TokenManager.parseJWT(sf);
